@@ -15,29 +15,28 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with jafito. If not, see <http://www.gnu.org/licenses/>.
 
-package de.topobyte.jafito.filemanager;
+package de.topobyte.jafito.filemanager.actions;
 
-import java.awt.Dimension;
-import java.nio.file.Path;
+import de.topobyte.jafito.filemanager.FileBrowser;
+import de.topobyte.swing.util.action.SimpleAction;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-
-public class BrowserTesting
+/**
+ * An abstract base class for actions that work on a {@link FileBrowser}.
+ * 
+ * @author Sebastian Kuerten
+ */
+public abstract class FileBrowserAction extends SimpleAction
 {
 
-	public static void test(Path path)
+	private static final long serialVersionUID = 1L;
+
+	protected FileBrowser browser;
+
+	public FileBrowserAction(FileBrowser browser, String name,
+			String description)
 	{
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run()
-			{
-				FileBrowserFrame frame = new FileBrowserFrame(path);
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.setSize(new Dimension(800, 600));
-				frame.setVisible(true);
-			}
-		});
+		super(name, description);
+		this.browser = browser;
 	}
 
 }

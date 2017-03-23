@@ -23,7 +23,6 @@ import java.nio.file.Path;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import de.topobyte.jafito.filemanager.FileBrowser;
 import de.topobyte.system.utils.SystemPaths;
 
 public class RunFileManager
@@ -37,9 +36,8 @@ public class RunFileManager
 			@Override
 			public void run()
 			{
-				JFrame frame = new JFrame("File Manager");
+				FileBrowserFrame frame = new FileBrowserFrame(path);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.getContentPane().add(new FileBrowser(path));
 				frame.setSize(new Dimension(800, 600));
 				frame.setVisible(true);
 			}

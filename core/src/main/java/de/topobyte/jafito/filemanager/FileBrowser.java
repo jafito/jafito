@@ -43,6 +43,7 @@ public class FileBrowser extends JPanel
 	private JXTreeTable treeTable;
 
 	private Path path;
+	private boolean showHiddenFiles = true;
 
 	private JTextField address = new JTextField();
 	private JButton refresh = new JButton("refresh");
@@ -96,7 +97,7 @@ public class FileBrowser extends JPanel
 
 	private TreeTableModel createTreeModel() throws IOException
 	{
-		return new PathModel(path);
+		return new PathModel(path, showHiddenFiles);
 	}
 
 	public void refreshModel()
@@ -124,6 +125,17 @@ public class FileBrowser extends JPanel
 			return;
 		}
 		this.path = path;
+		refreshModel();
+	}
+
+	public boolean isShowHiddenFiles()
+	{
+		return showHiddenFiles;
+	}
+
+	public void setShowHiddenFiles(boolean showHiddenFiles)
+	{
+		this.showHiddenFiles = showHiddenFiles;
 		refreshModel();
 	}
 

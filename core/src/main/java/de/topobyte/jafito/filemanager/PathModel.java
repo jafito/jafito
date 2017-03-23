@@ -36,6 +36,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 public class PathModel implements TreeTableModel
@@ -43,21 +44,23 @@ public class PathModel implements TreeTableModel
 
 	final static Logger logger = LoggerFactory.getLogger(PathModel.class);
 
-	protected EventListenerList listenerList = new EventListenerList();
-
-	private Path root;
-
 	private DateTimeFormatter pattern = DateTimeFormat
 			.forPattern("YYYY-MM-dd HH:mm");
 
+	protected EventListenerList listenerList = new EventListenerList();
+
+	private Path root;
+	private boolean showHiddenFiles;
+
 	public PathModel()
 	{
-		this(Paths.get("/"));
+		this(Paths.get("/"), true);
 	}
 
-	public PathModel(Path root)
+	public PathModel(Path root, boolean showHiddenFiles)
 	{
 		this.root = root;
+		this.showHiddenFiles = showHiddenFiles;
 	}
 
 	private List<Path> getFiles(Path parentFile) throws IOException
@@ -73,7 +76,20 @@ public class PathModel implements TreeTableModel
 	{
 		try (DirectoryStream<Path> stream = Files
 				.newDirectoryStream(directory)) {
-			return Lists.newArrayList(stream);
+			List<Path> list = Lists.newArrayList(stream);
+			if (showHiddenFiles) {
+				return list;
+			}
+
+			list = Lists.newArrayList(Iterables.filter(list, a -> {
+				try {
+					return !Files.isHidden(a);
+				} catch (IOException e) {
+					return false;
+				}
+			}));
+
+			return list;
 		}
 	}
 

@@ -15,29 +15,39 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with jafito. If not, see <http://www.gnu.org/licenses/>.
 
-package de.topobyte.jafito.filemanager;
+package de.topobyte.jafito.filemanager.actions;
 
-import java.awt.Dimension;
-import java.nio.file.Path;
+import java.awt.event.ActionEvent;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import de.topobyte.jafito.filemanager.FileBrowser;
 
-public class BrowserTesting
+public class ShowHiddenFilesAction extends FileBrowserActionBoolean
 {
 
-	public static void test(Path path)
+	private static final long serialVersionUID = 1L;
+
+	public ShowHiddenFilesAction(FileBrowser browser)
 	{
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run()
-			{
-				FileBrowserFrame frame = new FileBrowserFrame(path);
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.setSize(new Dimension(800, 600));
-				frame.setVisible(true);
-			}
-		});
+		super(browser, "Show Hidden Files",
+				"Toggle visibility of hidden files");
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		super.actionPerformed(e);
+	}
+
+	@Override
+	protected boolean getValue()
+	{
+		return browser.isShowHiddenFiles();
+	}
+
+	@Override
+	protected void setValue(boolean value)
+	{
+		browser.setShowHiddenFiles(value);
 	}
 
 }
