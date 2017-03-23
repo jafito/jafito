@@ -21,7 +21,9 @@ import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -71,6 +73,8 @@ public class FileBrowser extends JPanel
 		// actions
 
 		refresh.addActionListener(e -> refreshModel());
+
+		address.addActionListener(e -> goToAddressLocation());
 	}
 
 	private JPanel createToolbar()
@@ -104,6 +108,23 @@ public class FileBrowser extends JPanel
 			e.printStackTrace();
 		}
 		treeTable.packColumn(treeTable.getHierarchicalColumn(), -1);
+	}
+
+	private void goToAddressLocation()
+	{
+		String text = address.getText();
+		Path path = Paths.get(text);
+		if (!Files.exists(path)) {
+			return;
+		}
+		if (!Files.isDirectory(path)) {
+			return;
+		}
+		if (!Files.isReadable(path)) {
+			return;
+		}
+		this.path = path;
+		refreshModel();
 	}
 
 }
