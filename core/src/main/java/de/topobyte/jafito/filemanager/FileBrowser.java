@@ -37,6 +37,8 @@ import javax.swing.tree.TreePath;
 
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.TreeTableModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.topobyte.awt.util.GridBagConstraintsEditor;
 
@@ -44,6 +46,8 @@ public class FileBrowser extends JPanel
 {
 
 	private static final long serialVersionUID = -2494758020181769713L;
+
+	final static Logger logger = LoggerFactory.getLogger(FileBrowser.class);
 
 	public static interface LocationListener
 	{
@@ -140,8 +144,7 @@ public class FileBrowser extends JPanel
 		try {
 			treeTable.setTreeTableModel(createTreeModel());
 		} catch (IOException e) {
-			System.out.println("Error while refreshing model");
-			e.printStackTrace();
+			logger.error("Error while refreshing model", e);
 		}
 		treeTable.packColumn(treeTable.getHierarchicalColumn(), -1);
 	}
@@ -262,7 +265,8 @@ public class FileBrowser extends JPanel
 		try {
 			pb.start();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(String.format("Error while running command '%s'"),
+					args.toString(), e);
 		}
 	}
 
