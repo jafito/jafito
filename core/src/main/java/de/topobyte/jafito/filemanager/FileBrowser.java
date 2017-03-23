@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -40,6 +42,13 @@ public class FileBrowser extends JPanel
 
 	private static final long serialVersionUID = -2494758020181769713L;
 
+	public static interface LocationListener
+	{
+
+		public void locationChanged(Path newLocation);
+
+	}
+
 	private JXTreeTable treeTable;
 
 	private Path path;
@@ -47,6 +56,8 @@ public class FileBrowser extends JPanel
 
 	private JTextField address = new JTextField();
 	private JButton refresh = new JButton("refresh");
+
+	private List<LocationListener> locationListeners = new ArrayList<>();
 
 	public FileBrowser(Path path)
 	{
@@ -70,6 +81,7 @@ public class FileBrowser extends JPanel
 		// init
 
 		refreshModel();
+		address.setText(path.toString());
 
 		// actions
 
@@ -126,6 +138,7 @@ public class FileBrowser extends JPanel
 		}
 		this.path = path;
 		refreshModel();
+		fireLocationListeners();
 	}
 
 	public boolean isShowHiddenFiles()
@@ -137,6 +150,28 @@ public class FileBrowser extends JPanel
 	{
 		this.showHiddenFiles = showHiddenFiles;
 		refreshModel();
+	}
+
+	/*
+	 * listeners
+	 */
+
+	public void addLocationListener(LocationListener listener)
+	{
+		locationListeners.add(listener);
+	}
+
+	public void removeLocationListener(LocationListener listener)
+	{
+		locationListeners.remove(listener);
+	}
+
+	private void fireLocationListeners()
+	{
+		Path newLocation = path;
+		for (LocationListener listener : locationListeners) {
+			listener.locationChanged(newLocation);
+		}
 	}
 
 }
