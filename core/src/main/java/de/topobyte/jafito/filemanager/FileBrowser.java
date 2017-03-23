@@ -240,8 +240,40 @@ public class FileBrowser extends JPanel
 		if (Files.isDirectory(path)) {
 			tryGoToPath(path);
 		} else {
-			// TODO: handle files, too
+			String filename = path.getFileName().toString();
+			boolean isPdf = filename.endsWith(".pdf");
+			boolean isPng = filename.endsWith(".png");
+			boolean isJpg = filename.endsWith(".jpg");
+			if (isPdf) {
+				openPdf(path);
+			} else if (isPng || isJpg) {
+				openImage(path);
+			}
 		}
+	}
+
+	private void run(String command, Path file)
+	{
+		ProcessBuilder pb = new ProcessBuilder();
+		List<String> args = new ArrayList<>();
+		args.add(command);
+		args.add(file.toString());
+		pb.command(args);
+		try {
+			pb.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void openPdf(Path file)
+	{
+		run("evince", file);
+	}
+
+	private void openImage(Path file)
+	{
+		run("eog", file);
 	}
 
 }
