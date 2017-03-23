@@ -20,6 +20,8 @@ package de.topobyte.jafito.filemanager;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,6 +33,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.tree.TreePath;
 
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.TreeTableModel;
@@ -69,6 +72,7 @@ public class FileBrowser extends JPanel
 
 		treeTable = new JXTreeTable();
 		JScrollPane scroller = new JScrollPane(treeTable);
+		treeTable.addMouseListener(new TreeMouseHandler());
 
 		// toolbar
 
@@ -80,8 +84,8 @@ public class FileBrowser extends JPanel
 
 		// init
 
+		updateAddressText();
 		refreshModel();
-		address.setText(path.toString());
 
 		// actions
 
@@ -112,6 +116,11 @@ public class FileBrowser extends JPanel
 		return new PathModel(path, showHiddenFiles);
 	}
 
+	private void updateAddressText()
+	{
+		address.setText(path.toString());
+	}
+
 	public void refreshModel()
 	{
 		try {
@@ -127,6 +136,11 @@ public class FileBrowser extends JPanel
 	{
 		String text = address.getText();
 		Path path = Paths.get(text);
+		tryGoToPath(path);
+	}
+
+	private void tryGoToPath(Path path)
+	{
 		if (!Files.exists(path)) {
 			return;
 		}
@@ -137,6 +151,8 @@ public class FileBrowser extends JPanel
 			return;
 		}
 		this.path = path;
+
+		updateAddressText();
 		refreshModel();
 		fireLocationListeners();
 	}
@@ -172,6 +188,29 @@ public class FileBrowser extends JPanel
 		for (LocationListener listener : locationListeners) {
 			listener.locationChanged(newLocation);
 		}
+	}
+
+	/*
+	 * mouse handling
+	 */
+
+	private class TreeMouseHandler extends MouseAdapter
+	{
+
+		@Override
+		public void mousePressed(MouseEvent e)
+		{
+			if (e.getClickCount() == 2) {
+				TreePath treePath = treeTable.getPathForLocation(e.getX(),
+						e.getY());
+				if (treePath == null) {
+					return;
+				}
+				Path last = (Path) treePath.getLastPathComponent();
+				tryGoToPath(last);
+			}
+		}
+
 	}
 
 }
