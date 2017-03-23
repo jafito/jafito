@@ -214,6 +214,14 @@ public class FileBrowser extends JPanel
 		@Override
 		public void mousePressed(MouseEvent e)
 		{
+			// The event is consumed by the tree table if the click was on the
+			// expand / collapse control in the tree column. In that case we
+			// stop processing to avoid double clicks on the control to trigger
+			// a path change.
+			if (e.isConsumed()) {
+				return;
+			}
+			// Handle double clicks
 			if (e.getClickCount() == 2) {
 				TreePath treePath = treeTable.getPathForLocation(e.getX(),
 						e.getY());
