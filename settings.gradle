@@ -1,0 +1,3 @@
+include 'core', 'exe'
+project(':core').name = 'jafito-core'
+project(':exe').name = 'jafito-exe'
