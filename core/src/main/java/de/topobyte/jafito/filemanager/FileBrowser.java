@@ -58,6 +58,7 @@ public class FileBrowser extends JPanel
 	private boolean showHiddenFiles = true;
 
 	private JTextField address = new JTextField();
+	private JButton up = new JButton("up");
 	private JButton refresh = new JButton("refresh");
 
 	private List<LocationListener> locationListeners = new ArrayList<>();
@@ -89,6 +90,7 @@ public class FileBrowser extends JPanel
 
 		// actions
 
+		up.addActionListener(e -> goUp());
 		refresh.addActionListener(e -> refreshModel());
 
 		address.addActionListener(e -> goToAddressLocation());
@@ -103,6 +105,9 @@ public class FileBrowser extends JPanel
 
 		edit.fill(GridBagConstraints.BOTH);
 		edit.gridY(0).gridX(GridBagConstraints.RELATIVE);
+
+		edit.weightX(0);
+		bar.add(up, c);
 		edit.weightX(1);
 		bar.add(address, c);
 		edit.weightX(0);
@@ -119,6 +124,15 @@ public class FileBrowser extends JPanel
 	private void updateAddressText()
 	{
 		address.setText(path.toString());
+	}
+
+	public void goUp()
+	{
+		Path parent = path.getParent();
+		if (parent == null) {
+			return;
+		}
+		tryGoToPath(parent);
 	}
 
 	public void refreshModel()
