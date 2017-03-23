@@ -229,10 +229,19 @@ public class FileBrowser extends JPanel
 					return;
 				}
 				Path last = (Path) treePath.getLastPathComponent();
-				tryGoToPath(last);
+				doubleClick(last);
 			}
 		}
 
+	}
+
+	public void doubleClick(Path path)
+	{
+		if (Files.isDirectory(path)) {
+			tryGoToPath(path);
+		} else {
+			// TODO: handle files, too
+		}
 	}
 
 }
