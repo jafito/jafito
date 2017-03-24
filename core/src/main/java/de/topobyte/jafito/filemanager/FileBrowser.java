@@ -43,6 +43,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.topobyte.awt.util.GridBagConstraintsEditor;
+import de.topobyte.jafito.filemanager.actions.GoHomeAction;
 import de.topobyte.jafito.filemanager.actions.GoUpAction;
 import de.topobyte.jafito.filemanager.actions.RefreshAction;
 
@@ -67,6 +68,7 @@ public class FileBrowser extends JPanel
 
 	private JTextField address = new JTextField();
 	private JButton up;
+	private JButton home;
 	private JButton refresh;
 
 	private List<LocationListener> locationListeners = new ArrayList<>();
@@ -86,6 +88,7 @@ public class FileBrowser extends JPanel
 		// toolbar
 
 		up = toolbarButton(new GoUpAction(this));
+		home = toolbarButton(new GoHomeAction(this));
 		refresh = toolbarButton(new RefreshAction(this));
 
 		JPanel toolbar = createToolbar();
@@ -124,6 +127,7 @@ public class FileBrowser extends JPanel
 
 		edit.weightX(0);
 		bar.add(up, c);
+		bar.add(home, c);
 		edit.weightX(1);
 		bar.add(address, c);
 		edit.weightX(0);
@@ -148,6 +152,11 @@ public class FileBrowser extends JPanel
 		if (parent == null) {
 			return;
 		}
+		tryGoToPath(parent);
+	}
+
+	public void go(Path parent)
+	{
 		tryGoToPath(parent);
 	}
 
