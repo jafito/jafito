@@ -33,9 +33,9 @@ public abstract class FileBrowserAction extends SimpleAction
 	protected FileBrowser browser;
 
 	public FileBrowserAction(FileBrowser browser, String name,
-			String description)
+			String description, String icon)
 	{
-		super(name, description);
+		super(name, description, icon);
 		this.browser = browser;
 	}
 

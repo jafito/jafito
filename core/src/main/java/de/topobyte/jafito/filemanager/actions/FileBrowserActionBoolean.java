@@ -17,12 +17,8 @@
 
 package de.topobyte.jafito.filemanager.actions;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.Action;
-
 import de.topobyte.jafito.filemanager.FileBrowser;
-import de.topobyte.swing.util.action.SimpleAction;
+import de.topobyte.swing.util.action.SimpleBooleanAction;
 
 /**
  * An abstract base class for actions that work on a {@link FileBrowser} and
@@ -30,7 +26,7 @@ import de.topobyte.swing.util.action.SimpleAction;
  * 
  * @author Sebastian Kuerten
  */
-public abstract class FileBrowserActionBoolean extends SimpleAction
+public abstract class FileBrowserActionBoolean extends SimpleBooleanAction
 {
 
 	private static final long serialVersionUID = 1L;
@@ -38,32 +34,10 @@ public abstract class FileBrowserActionBoolean extends SimpleAction
 	protected FileBrowser browser;
 
 	public FileBrowserActionBoolean(FileBrowser browser, String name,
-			String description)
+			String description, String icon)
 	{
-		super(name, description);
+		super(name, description, icon);
 		this.browser = browser;
 	}
-
-	@Override
-	public Object getValue(String key)
-	{
-		if (key.equals(Action.SELECTED_KEY)) {
-			return getValue();
-		}
-		return super.getValue(key);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent event)
-	{
-		boolean oldValue = getValue();
-		boolean newValue = !oldValue;
-		setValue(newValue);
-		firePropertyChange(Action.SELECTED_KEY, oldValue, newValue);
-	}
-
-	protected abstract boolean getValue();
-
-	protected abstract void setValue(boolean value);
 
 }

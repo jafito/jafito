@@ -21,21 +21,21 @@ import java.awt.event.ActionEvent;
 
 import de.topobyte.jafito.filemanager.FileBrowser;
 
-public class QuitAction extends FileBrowserAction
+public class RefreshAction extends FileBrowserAction
 {
 
 	private static final long serialVersionUID = 1L;
 
-	public QuitAction(FileBrowser browser)
+	public RefreshAction(FileBrowser browser)
 	{
-		super(browser, "Quit", "Exit the application",
-				"org/freedesktop/tango/22x22/actions/system-log-out.png");
+		super(browser, "Refresh", "Refresh the current folder",
+				"org/freedesktop/tango/22x22/actions/view-refresh.png");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		System.exit(0);
+		browser.refreshModel();
 	}
 
 }

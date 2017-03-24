@@ -17,8 +17,6 @@
 
 package de.topobyte.jafito.filemanager.actions;
 
-import java.awt.event.ActionEvent;
-
 import de.topobyte.jafito.filemanager.FileBrowser;
 
 public class ShowHiddenFilesAction extends FileBrowserActionBoolean
@@ -29,25 +27,20 @@ public class ShowHiddenFilesAction extends FileBrowserActionBoolean
 	public ShowHiddenFilesAction(FileBrowser browser)
 	{
 		super(browser, "Show Hidden Files",
-				"Toggle visibility of hidden files");
+				"Toggle visibility of hidden files", null);
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		super.actionPerformed(e);
-	}
-
-	@Override
-	protected boolean getValue()
+	public boolean getState()
 	{
 		return browser.isShowHiddenFiles();
 	}
 
 	@Override
-	protected void setValue(boolean value)
+	public void toggleState()
 	{
-		browser.setShowHiddenFiles(value);
+		boolean oldValue = browser.isShowHiddenFiles();
+		browser.setShowHiddenFiles(!oldValue);
 	}
 
 }

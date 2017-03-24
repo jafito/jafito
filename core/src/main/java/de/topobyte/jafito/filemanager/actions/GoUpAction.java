@@ -21,21 +21,22 @@ import java.awt.event.ActionEvent;
 
 import de.topobyte.jafito.filemanager.FileBrowser;
 
-public class QuitAction extends FileBrowserAction
+public class GoUpAction extends FileBrowserAction
 {
 
 	private static final long serialVersionUID = 1L;
 
-	public QuitAction(FileBrowser browser)
+	public GoUpAction(FileBrowser browser)
 	{
-		super(browser, "Quit", "Exit the application",
-				"org/freedesktop/tango/22x22/actions/system-log-out.png");
+		super(browser, "Go Up",
+				"Navigate one level up the directory hierarchy",
+				"org/freedesktop/tango/22x22/actions/go-up.png");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		System.exit(0);
+		browser.goUp();
 	}
 
 }

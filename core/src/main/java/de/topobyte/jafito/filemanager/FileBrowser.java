@@ -20,6 +20,7 @@ package de.topobyte.jafito.filemanager;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -29,6 +30,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -41,6 +43,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.topobyte.awt.util.GridBagConstraintsEditor;
+import de.topobyte.jafito.filemanager.actions.GoUpAction;
+import de.topobyte.jafito.filemanager.actions.RefreshAction;
 
 public class FileBrowser extends JPanel
 {
@@ -62,8 +66,8 @@ public class FileBrowser extends JPanel
 	private boolean showHiddenFiles = true;
 
 	private JTextField address = new JTextField();
-	private JButton up = new JButton("up");
-	private JButton refresh = new JButton("refresh");
+	private JButton up;
+	private JButton refresh;
 
 	private List<LocationListener> locationListeners = new ArrayList<>();
 
@@ -81,6 +85,9 @@ public class FileBrowser extends JPanel
 
 		// toolbar
 
+		up = toolbarButton(new GoUpAction(this));
+		refresh = toolbarButton(new RefreshAction(this));
+
 		JPanel toolbar = createToolbar();
 
 		// layout
@@ -94,10 +101,15 @@ public class FileBrowser extends JPanel
 
 		// actions
 
-		up.addActionListener(e -> goUp());
-		refresh.addActionListener(e -> refreshModel());
-
 		address.addActionListener(e -> goToAddressLocation());
+	}
+
+	private JButton toolbarButton(Action action)
+	{
+		JButton button = new JButton(action);
+		button.setHideActionText(true);
+		button.setMargin(new Insets(2, 2, 2, 2));
+		return button;
 	}
 
 	private JPanel createToolbar()
