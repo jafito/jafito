@@ -35,6 +35,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.TreePath;
 
@@ -74,6 +75,7 @@ public class FileBrowser extends JPanel
 
 	private List<LocationListener> locationListeners = new ArrayList<>();
 
+	private TableCellRenderer defaultRenderer = new OurDefaultTableCellRenderer();
 	private SizeCellRenderer sizeRenderer = new SizeCellRenderer();
 	private DateCellRenderer dateRenderer = new DateCellRenderer();
 
@@ -88,8 +90,6 @@ public class FileBrowser extends JPanel
 		treeTable = new JXTreeTable();
 		JScrollPane scroller = new JScrollPane(treeTable);
 		treeTable.addMouseListener(new TreeMouseHandler());
-
-		treeTable.getColumnModel().setColumnMargin(5);
 
 		// toolbar
 
@@ -176,6 +176,8 @@ public class FileBrowser extends JPanel
 		treeTable.packColumn(treeTable.getHierarchicalColumn(), -1);
 
 		// setup column renderers
+
+		treeTable.setDefaultRenderer(Object.class, defaultRenderer);
 
 		TableColumn sizeColumn = treeTable
 				.getColumn(PathModel.COLUMN_INDEX_SIZE);

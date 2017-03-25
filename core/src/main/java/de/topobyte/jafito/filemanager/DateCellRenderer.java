@@ -20,12 +20,11 @@ package de.topobyte.jafito.filemanager;
 import java.nio.file.attribute.FileTime;
 
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class DateCellRenderer extends DefaultTableCellRenderer
+public class DateCellRenderer extends OurDefaultTableCellRenderer
 {
 
 	private static final long serialVersionUID = 1L;
