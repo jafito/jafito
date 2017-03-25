@@ -44,6 +44,11 @@ public class PathModel implements TreeTableModel
 
 	final static Logger logger = LoggerFactory.getLogger(PathModel.class);
 
+	public static final int COLUMN_INDEX_NAME = 0;
+	public static final int COLUMN_INDEX_SIZE = 1;
+	public static final int COLUMN_INDEX_TYPE = 2;
+	public static final int COLUMN_INDEX_DATE = 3;
+
 	private DateTimeFormatter pattern = DateTimeFormat
 			.forPattern("YYYY-MM-dd HH:mm");
 
@@ -113,13 +118,13 @@ public class PathModel implements TreeTableModel
 	public Class<?> getColumnClass(int column)
 	{
 		switch (column) {
-		case 0:
+		case COLUMN_INDEX_NAME:
 			return String.class;
-		case 1:
+		case COLUMN_INDEX_SIZE:
 			return Long.class;
-		case 2:
+		case COLUMN_INDEX_TYPE:
 			return String.class;
-		case 3:
+		case COLUMN_INDEX_DATE:
 			return FileTime.class;
 		default:
 			return Object.class;
@@ -130,13 +135,13 @@ public class PathModel implements TreeTableModel
 	public String getColumnName(int column)
 	{
 		switch (column) {
-		case 0:
+		case COLUMN_INDEX_NAME:
 			return "Name";
-		case 1:
+		case COLUMN_INDEX_SIZE:
 			return "Size";
-		case 2:
+		case COLUMN_INDEX_TYPE:
 			return "Type";
-		case 3:
+		case COLUMN_INDEX_DATE:
 			return "Date Modified";
 		default:
 			return "Column " + column;
