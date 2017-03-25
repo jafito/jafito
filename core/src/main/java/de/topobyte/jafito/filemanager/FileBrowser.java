@@ -74,6 +74,9 @@ public class FileBrowser extends JPanel
 
 	private List<LocationListener> locationListeners = new ArrayList<>();
 
+	private SizeCellRenderer sizeRenderer = new SizeCellRenderer();
+	private DateCellRenderer dateRenderer = new DateCellRenderer();
+
 	public FileBrowser(Path path)
 	{
 		super(new BorderLayout());
@@ -102,16 +105,6 @@ public class FileBrowser extends JPanel
 
 		updateAddressText();
 		refreshModel();
-
-		// setup column renderers
-
-		TableColumn sizeColumn = treeTable
-				.getColumn(PathModel.COLUMN_INDEX_SIZE);
-		sizeColumn.setCellRenderer(new SizeCellRenderer());
-
-		TableColumn dateColumn = treeTable
-				.getColumn(PathModel.COLUMN_INDEX_DATE);
-		dateColumn.setCellRenderer(new DateCellRenderer());
 
 		// actions
 
@@ -179,6 +172,16 @@ public class FileBrowser extends JPanel
 			logger.error("Error while refreshing model", e);
 		}
 		treeTable.packColumn(treeTable.getHierarchicalColumn(), -1);
+
+		// setup column renderers
+
+		TableColumn sizeColumn = treeTable
+				.getColumn(PathModel.COLUMN_INDEX_SIZE);
+		sizeColumn.setCellRenderer(sizeRenderer);
+
+		TableColumn dateColumn = treeTable
+				.getColumn(PathModel.COLUMN_INDEX_DATE);
+		dateColumn.setCellRenderer(dateRenderer);
 	}
 
 	private void goToAddressLocation()
