@@ -48,6 +48,9 @@ import de.topobyte.awt.util.GridBagConstraintsEditor;
 import de.topobyte.jafito.filemanager.actions.GoHomeAction;
 import de.topobyte.jafito.filemanager.actions.GoUpAction;
 import de.topobyte.jafito.filemanager.actions.RefreshAction;
+import de.topobyte.jafito.filemanager.cellrenderers.DateCellRenderer;
+import de.topobyte.jafito.filemanager.cellrenderers.OurDefaultTableCellRenderer;
+import de.topobyte.jafito.filemanager.cellrenderers.SizeCellRenderer;
 
 public class FileBrowser extends JPanel
 {

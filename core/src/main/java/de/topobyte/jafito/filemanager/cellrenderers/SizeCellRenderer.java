@@ -15,33 +15,30 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with jafito. If not, see <http://www.gnu.org/licenses/>.
 
-package de.topobyte.jafito.filemanager;
+package de.topobyte.jafito.filemanager.cellrenderers;
 
-import java.awt.Component;
+import javax.swing.SwingConstants;
 
-import javax.swing.JTable;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
+import de.topobyte.jafito.filemanager.SizeFormatter;
 
-public class OurDefaultTableCellRenderer extends DefaultTableCellRenderer
+public class SizeCellRenderer extends OurDefaultTableCellRenderer
 {
 
 	private static final long serialVersionUID = 1L;
 
-	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value,
-			boolean isSelected, boolean hasFocus, int row, int column)
+	private SizeFormatter formatter = new SizeFormatter();
+
+	public SizeCellRenderer()
 	{
-		Component comp = super.getTableCellRendererComponent(table, value,
-				isSelected, hasFocus, row, column);
+		setHorizontalAlignment(SwingConstants.RIGHT);
+	}
 
-		Border border = getBorder();
-		Border margin = new EmptyBorder(0, 2, 0, 2);
-		setBorder(new CompoundBorder(border, margin));
-
-		return comp;
+	@Override
+	protected void setValue(Object value)
+	{
+		Long size = (Long) value;
+		String display = formatter.format(size.longValue());
+		setText(display);
 	}
 
 }
