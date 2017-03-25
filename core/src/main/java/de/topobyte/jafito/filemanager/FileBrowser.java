@@ -35,6 +35,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.table.TableColumn;
 import javax.swing.tree.TreePath;
 
 import org.jdesktop.swingx.JXTreeTable;
@@ -101,6 +102,12 @@ public class FileBrowser extends JPanel
 
 		updateAddressText();
 		refreshModel();
+
+		// setup column renderers
+
+		TableColumn sizeColumn = treeTable
+				.getColumn(PathModel.COLUMN_INDEX_SIZE);
+		sizeColumn.setCellRenderer(new SizeCellRenderer());
 
 		// actions
 
