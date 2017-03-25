@@ -109,6 +109,10 @@ public class FileBrowser extends JPanel
 				.getColumn(PathModel.COLUMN_INDEX_SIZE);
 		sizeColumn.setCellRenderer(new SizeCellRenderer());
 
+		TableColumn dateColumn = treeTable
+				.getColumn(PathModel.COLUMN_INDEX_DATE);
+		dateColumn.setCellRenderer(new DateCellRenderer());
+
 		// actions
 
 		address.addActionListener(e -> goToAddressLocation());

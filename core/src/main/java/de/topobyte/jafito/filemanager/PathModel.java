@@ -31,8 +31,6 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 
 import org.jdesktop.swingx.treetable.TreeTableModel;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,9 +46,6 @@ public class PathModel implements TreeTableModel
 	public static final int COLUMN_INDEX_SIZE = 1;
 	public static final int COLUMN_INDEX_TYPE = 2;
 	public static final int COLUMN_INDEX_DATE = 3;
-
-	private DateTimeFormatter pattern = DateTimeFormat
-			.forPattern("YYYY-MM-dd HH:mm");
 
 	protected EventListenerList listenerList = new EventListenerList();
 
@@ -283,11 +278,11 @@ public class PathModel implements TreeTableModel
 		}
 	}
 
-	private String modificationTime(Path file)
+	private FileTime modificationTime(Path file)
 	{
 		try {
 			FileTime time = Files.getLastModifiedTime(file);
-			return pattern.print(time.toMillis());
+			return time;
 		} catch (IOException e) {
 			return null;
 		}
