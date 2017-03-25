@@ -89,6 +89,8 @@ public class FileBrowser extends JPanel
 		JScrollPane scroller = new JScrollPane(treeTable);
 		treeTable.addMouseListener(new TreeMouseHandler());
 
+		treeTable.getColumnModel().setColumnMargin(5);
+
 		// toolbar
 
 		up = toolbarButton(new GoUpAction(this));
