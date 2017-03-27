@@ -18,10 +18,8 @@
 package de.topobyte.jafito.tools;
 
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.List;
 
 import org.fusesource.jansi.Ansi;
@@ -29,9 +27,7 @@ import org.fusesource.jansi.Ansi.Color;
 import org.fusesource.jansi.AnsiConsole;
 import org.fusesource.jansi.internal.CLibrary;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-
+import de.topobyte.jafito.util.Util;
 import jline.Terminal;
 import jline.TerminalFactory;
 
@@ -73,7 +69,7 @@ public class Ls
 	private void list(Path path) throws IOException
 	{
 		// TODO: use width and height for formatting
-		List<Path> files = getFiles(path);
+		List<Path> files = Util.getFiles(path, false);
 		for (Path file : files) {
 			Path relative = path.relativize(file);
 			if (Files.isDirectory(file)) {
@@ -97,37 +93,6 @@ public class Ls
 			AnsiConsole.out.println(ansi);
 		} else {
 			System.out.println(string);
-		}
-	}
-
-	private List<Path> getFiles(Path parentFile) throws IOException
-	{
-		List<Path> list = list(parentFile, false);
-		Collections.sort(
-				list,
-				(Path o1, Path o2) -> String.CASE_INSENSITIVE_ORDER.compare(
-						o1.toString(), o2.toString()));
-		return list;
-	}
-
-	private List<Path> list(Path directory, boolean showHiddenFiles)
-			throws IOException
-	{
-		try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory)) {
-			List<Path> list = Lists.newArrayList(stream);
-			if (showHiddenFiles) {
-				return list;
-			}
-
-			list = Lists.newArrayList(Iterables.filter(list, a -> {
-				try {
-					return !Files.isHidden(a);
-				} catch (IOException e) {
-					return false;
-				}
-			}));
-
-			return list;
 		}
 	}
 

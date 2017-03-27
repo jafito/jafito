@@ -18,12 +18,10 @@
 package de.topobyte.jafito.filemanager;
 
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.event.EventListenerList;
@@ -34,8 +32,7 @@ import org.jdesktop.swingx.treetable.TreeTableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import de.topobyte.jafito.util.Util;
 
 public class PathModel implements TreeTableModel
 {
@@ -61,36 +58,6 @@ public class PathModel implements TreeTableModel
 	{
 		this.root = root;
 		this.showHiddenFiles = showHiddenFiles;
-	}
-
-	private List<Path> getFiles(Path parentFile) throws IOException
-	{
-		List<Path> list = list(parentFile);
-		Collections.sort(list,
-				(Path o1, Path o2) -> String.CASE_INSENSITIVE_ORDER
-						.compare(o1.toString(), o2.toString()));
-		return list;
-	}
-
-	private List<Path> list(Path directory) throws IOException
-	{
-		try (DirectoryStream<Path> stream = Files
-				.newDirectoryStream(directory)) {
-			List<Path> list = Lists.newArrayList(stream);
-			if (showHiddenFiles) {
-				return list;
-			}
-
-			list = Lists.newArrayList(Iterables.filter(list, a -> {
-				try {
-					return !Files.isHidden(a);
-				} catch (IOException e) {
-					return false;
-				}
-			}));
-
-			return list;
-		}
 	}
 
 	/*
@@ -170,7 +137,7 @@ public class PathModel implements TreeTableModel
 		if (parent instanceof Path) {
 			Path file = (Path) parent;
 			try {
-				List<Path> files = getFiles(file);
+				List<Path> files = Util.getFiles(file, showHiddenFiles);
 				if (files != null) {
 					return files.size();
 				}
@@ -188,7 +155,7 @@ public class PathModel implements TreeTableModel
 		if (parent instanceof Path) {
 			Path file = (Path) parent;
 			try {
-				List<Path> files = getFiles(file);
+				List<Path> files = Util.getFiles(file, showHiddenFiles);
 				if (files != null) {
 					return files.get(index);
 				}
@@ -208,7 +175,7 @@ public class PathModel implements TreeTableModel
 		Path parentFile = (Path) parent;
 		List<Path> files;
 		try {
-			files = getFiles(parentFile);
+			files = Util.getFiles(parentFile, showHiddenFiles);
 
 			for (int i = 0, len = files.size(); i < len; i++) {
 				if (files.get(i).equals(child)) {
