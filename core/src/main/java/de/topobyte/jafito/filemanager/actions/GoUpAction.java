@@ -28,8 +28,7 @@ public class GoUpAction extends FileBrowserAction
 
 	public GoUpAction(FileBrowser browser)
 	{
-		super(browser, "Go Up",
-				"Navigate one level up the directory hierarchy",
+		super(browser, "Go Up", "Navigate one level up the directory hierarchy",
 				"org/freedesktop/tango/22x22/actions/go-up.png");
 	}
 

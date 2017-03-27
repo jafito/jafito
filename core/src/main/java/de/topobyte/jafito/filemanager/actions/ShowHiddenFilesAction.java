@@ -26,8 +26,8 @@ public class ShowHiddenFilesAction extends FileBrowserActionBoolean
 
 	public ShowHiddenFilesAction(FileBrowser browser)
 	{
-		super(browser, "Show Hidden Files",
-				"Toggle visibility of hidden files", null);
+		super(browser, "Show Hidden Files", "Toggle visibility of hidden files",
+				null);
 	}
 
 	@Override
