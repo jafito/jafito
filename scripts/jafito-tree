@@ -1,0 +1,7 @@
+#!/bin/bash
+
+DIR=$(dirname $0)
+CMD="$DIR/jafito.sh"
+CLASS="de.topobyte.jafito.tools.RunTree"
+
+exec "$CMD" "$CLASS" "$@"
