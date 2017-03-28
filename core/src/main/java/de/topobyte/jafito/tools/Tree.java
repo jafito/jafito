@@ -53,11 +53,10 @@ public class Tree
 	{
 		Stack<Boolean> stack = new Stack<Boolean>();
 		terminal.println(Ansi.Color.BLUE, true, path.toString());
-		tree(path, 1, stack);
+		tree(path, stack);
 	}
 
-	private void tree(Path path, int depth, Stack<Boolean> stack)
-			throws IOException
+	private void tree(Path path, Stack<Boolean> stack) throws IOException
 	{
 		List<Path> files = Util.getFiles(path, false);
 		for (int i = 0; i < files.size(); i++) {
@@ -65,7 +64,7 @@ public class Tree
 			Path relative = path.relativize(file);
 			boolean isLast = i + 1 >= files.size();
 
-			String prefix = prefix(depth, stack, isLast);
+			String prefix = prefix(stack, isLast);
 			String name = relative.toString();
 
 			if (Files.isDirectory(file)) {
@@ -78,17 +77,18 @@ public class Tree
 
 			if (Files.isDirectory(file)) {
 				stack.push(isLast);
-				tree(file, depth + 1, stack);
+				tree(file, stack);
 				stack.pop();
 			}
 		}
 	}
 
-	private String prefix(int depth, Stack<Boolean> stack, boolean isLast)
+	private String prefix(Stack<Boolean> stack, boolean isLast)
 	{
+		int depth = stack.size();
 		StringBuilder buffer = new StringBuilder();
 		List<Boolean> values = stack.asList();
-		for (int i = 0; i < depth - 1; i++) {
+		for (int i = 0; i < depth; i++) {
 			if (values.get(i)) {
 				buffer.append("    ");
 			} else {
