@@ -86,7 +86,7 @@ public class Tree
 	{
 		if (Files.isSymbolicLink(path)) {
 			Path target = Files.readSymbolicLink(path);
-			print(path, relative, stack, isLast, " -> " + target);
+			printSymlink(path, relative, stack, isLast, target);
 			return;
 		}
 
@@ -109,7 +109,10 @@ public class Tree
 			boolean subIsLast = i + 1 >= files.size();
 
 			stack.push(subIsLast);
-			if (Files.isDirectory(sub)) {
+			if (Files.isSymbolicLink(sub)) {
+				Path target = Files.readSymbolicLink(sub);
+				printSymlink(path, relativeSub, stack, subIsLast, target);
+			} else if (Files.isDirectory(sub)) {
 				numDirectories += 1;
 				tree(sub, relativeSub, stack, subIsLast);
 			} else {
@@ -120,15 +123,28 @@ public class Tree
 		}
 	}
 
+	private void printSymlink(Path file, Path relative, Stack<Boolean> stack,
+			boolean isLast, Path target)
+	{
+		String suffix = " -> " + target;
+		print(file, relative, stack, isLast, suffix);
+	}
+
 	private void print(Path file, Path relative, Stack<Boolean> stack,
 			boolean isLast, String suffix)
 	{
 		String prefix = prefix(stack, isLast);
 		String name = relative.toString();
 
-		if (Files.isDirectory(file)) {
+		if (Files.isSymbolicLink(file)) {
+			terminal.print(Ansi.Color.BLACK, false, prefix);
+			terminal.print(Ansi.Color.CYAN, true, name);
+		} else if (Files.isDirectory(file)) {
 			terminal.print(Ansi.Color.BLACK, false, prefix);
 			terminal.print(Ansi.Color.BLUE, true, name);
+		} else if (Files.isExecutable(file)) {
+			terminal.print(Ansi.Color.BLACK, false, prefix);
+			terminal.print(Ansi.Color.GREEN, true, name);
 		} else {
 			System.out.print(prefix);
 			System.out.print(name);
