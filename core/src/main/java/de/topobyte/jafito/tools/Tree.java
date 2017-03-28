@@ -56,40 +56,53 @@ public class Tree
 	{
 		Stack<Boolean> stack = new Stack<Boolean>();
 		terminal.println(Ansi.Color.BLUE, true, path.toString());
-		tree(path, stack);
+		recurse(path, stack);
 
 		System.out.println();
 		System.out.println(String.format("%d directories, %d files",
 				numDirectories, numFiles));
 	}
 
-	private void tree(Path path, Stack<Boolean> stack) throws IOException
+	private void tree(Path path, Path relative, Stack<Boolean> stack,
+			boolean isLast) throws IOException
+	{
+		print(path, relative, stack, isLast);
+
+		recurse(path, stack);
+	}
+
+	private void recurse(Path path, Stack<Boolean> stack) throws IOException
 	{
 		List<Path> files = Util.getFiles(path, false);
 		for (int i = 0; i < files.size(); i++) {
-			Path file = files.get(i);
-			Path relative = path.relativize(file);
-			boolean isLast = i + 1 >= files.size();
+			Path sub = files.get(i);
+			Path relativeSub = path.relativize(sub);
+			boolean subIsLast = i + 1 >= files.size();
 
-			String prefix = prefix(stack, isLast);
-			String name = relative.toString();
-
-			if (Files.isDirectory(file)) {
-				terminal.print(Ansi.Color.BLACK, false, prefix);
-				terminal.println(Ansi.Color.BLUE, true, name);
-			} else {
-				System.out.print(prefix);
-				System.out.println(name);
-			}
-
-			if (Files.isDirectory(file)) {
+			stack.push(subIsLast);
+			if (Files.isDirectory(sub)) {
 				numDirectories += 1;
-				stack.push(isLast);
-				tree(file, stack);
-				stack.pop();
+				tree(sub, relativeSub, stack, subIsLast);
 			} else {
+				print(sub, relativeSub, stack, subIsLast);
 				numFiles += 1;
 			}
+			stack.pop();
+		}
+	}
+
+	private void print(Path file, Path relative, Stack<Boolean> stack,
+			boolean isLast)
+	{
+		String prefix = prefix(stack, isLast);
+		String name = relative.toString();
+
+		if (Files.isDirectory(file)) {
+			terminal.print(Ansi.Color.BLACK, false, prefix);
+			terminal.println(Ansi.Color.BLUE, true, name);
+		} else {
+			System.out.print(prefix);
+			System.out.println(name);
 		}
 	}
 
@@ -98,7 +111,7 @@ public class Tree
 		int depth = stack.size();
 		StringBuilder buffer = new StringBuilder();
 		List<Boolean> values = stack.asList();
-		for (int i = 0; i < depth; i++) {
+		for (int i = 0; i < depth - 1; i++) {
 			if (values.get(i)) {
 				buffer.append("    ");
 			} else {
