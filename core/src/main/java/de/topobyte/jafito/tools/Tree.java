@@ -93,10 +93,10 @@ public class Tree
 		try {
 			List<Path> files = Util.getFiles(path, false);
 
-			print(path, relative, stack, isLast, null);
+			println(path, relative, stack, isLast);
 			recurse(path, stack, files);
 		} catch (AccessDeniedException e) {
-			print(path, relative, stack, isLast, ERROR_ACCESS_DENIED);
+			println(path, relative, stack, isLast, ERROR_ACCESS_DENIED);
 		}
 	}
 
@@ -111,12 +111,12 @@ public class Tree
 			stack.push(subIsLast);
 			if (Files.isSymbolicLink(sub)) {
 				Path target = Files.readSymbolicLink(sub);
-				printSymlink(path, relativeSub, stack, subIsLast, target);
+				printSymlink(sub, relativeSub, stack, subIsLast, target);
 			} else if (Files.isDirectory(sub)) {
 				numDirectories += 1;
 				tree(sub, relativeSub, stack, subIsLast);
 			} else {
-				print(sub, relativeSub, stack, subIsLast, null);
+				println(sub, relativeSub, stack, subIsLast);
 				numFiles += 1;
 			}
 			stack.pop();
@@ -126,8 +126,34 @@ public class Tree
 	private void printSymlink(Path file, Path relative, Stack<Boolean> stack,
 			boolean isLast, Path target)
 	{
-		String suffix = " -> " + target;
+		print(file, relative, stack, isLast, " -> ");
+		String targetName = target.toString();
+		if (Files.isDirectory(target)) {
+			terminal.print(Ansi.Color.BLUE, true, targetName);
+		} else {
+			terminal.print(Ansi.Color.BLACK, false, targetName);
+		}
+		System.out.println();
+	}
+
+	private void println(Path file, Path relative, Stack<Boolean> stack,
+			boolean isLast)
+	{
+		print(file, relative, stack, isLast);
+		System.out.println();
+	}
+
+	private void println(Path file, Path relative, Stack<Boolean> stack,
+			boolean isLast, String suffix)
+	{
 		print(file, relative, stack, isLast, suffix);
+		System.out.println();
+	}
+
+	private void print(Path file, Path relative, Stack<Boolean> stack,
+			boolean isLast)
+	{
+		print(file, relative, stack, isLast, null);
 	}
 
 	private void print(Path file, Path relative, Stack<Boolean> stack,
@@ -153,8 +179,6 @@ public class Tree
 		if (suffix != null) {
 			System.out.print(suffix);
 		}
-
-		System.out.println();
 	}
 
 	private String prefix(Stack<Boolean> stack, boolean isLast)
