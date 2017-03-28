@@ -18,7 +18,9 @@
 package de.topobyte.jafito.tools;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -30,6 +32,8 @@ import de.topobyte.jafito.util.Util;
 
 public class Tree
 {
+
+	private static final String ERROR_ACCESS_DENIED = " [error opening dir]";
 
 	private Terminal terminal;
 
@@ -55,8 +59,22 @@ public class Tree
 	private void tree(Path path) throws IOException
 	{
 		Stack<Boolean> stack = new Stack<Boolean>();
-		terminal.println(Ansi.Color.BLUE, true, path.toString());
-		recurse(path, stack);
+
+		try {
+			List<Path> files = Util.getFiles(path, false);
+			terminal.println(Ansi.Color.BLUE, true, path.toString());
+
+			// only here if listing files worked
+			recurse(path, stack, files);
+		} catch (AccessDeniedException e) {
+			terminal.print(Ansi.Color.BLUE, true, path.toString());
+			System.out.print(ERROR_ACCESS_DENIED);
+			System.out.println();
+		} catch (NoSuchFileException e) {
+			terminal.print(Ansi.Color.BLACK, false, path.toString());
+			System.out.print(ERROR_ACCESS_DENIED);
+			System.out.println();
+		}
 
 		System.out.println();
 		System.out.println(String.format("%d directories, %d files",
@@ -66,14 +84,19 @@ public class Tree
 	private void tree(Path path, Path relative, Stack<Boolean> stack,
 			boolean isLast) throws IOException
 	{
-		print(path, relative, stack, isLast);
+		try {
+			List<Path> files = Util.getFiles(path, false);
 
-		recurse(path, stack);
+			print(path, relative, stack, isLast, null);
+			recurse(path, stack, files);
+		} catch (AccessDeniedException e) {
+			print(path, relative, stack, isLast, ERROR_ACCESS_DENIED);
+		}
 	}
 
-	private void recurse(Path path, Stack<Boolean> stack) throws IOException
+	private void recurse(Path path, Stack<Boolean> stack, List<Path> files)
+			throws IOException
 	{
-		List<Path> files = Util.getFiles(path, false);
 		for (int i = 0; i < files.size(); i++) {
 			Path sub = files.get(i);
 			Path relativeSub = path.relativize(sub);
@@ -84,7 +107,7 @@ public class Tree
 				numDirectories += 1;
 				tree(sub, relativeSub, stack, subIsLast);
 			} else {
-				print(sub, relativeSub, stack, subIsLast);
+				print(sub, relativeSub, stack, subIsLast, null);
 				numFiles += 1;
 			}
 			stack.pop();
@@ -92,18 +115,24 @@ public class Tree
 	}
 
 	private void print(Path file, Path relative, Stack<Boolean> stack,
-			boolean isLast)
+			boolean isLast, String suffix)
 	{
 		String prefix = prefix(stack, isLast);
 		String name = relative.toString();
 
 		if (Files.isDirectory(file)) {
 			terminal.print(Ansi.Color.BLACK, false, prefix);
-			terminal.println(Ansi.Color.BLUE, true, name);
+			terminal.print(Ansi.Color.BLUE, true, name);
 		} else {
 			System.out.print(prefix);
-			System.out.println(name);
+			System.out.print(name);
 		}
+
+		if (suffix != null) {
+			System.out.print(suffix);
+		}
+
+		System.out.println();
 	}
 
 	private String prefix(Stack<Boolean> stack, boolean isLast)
