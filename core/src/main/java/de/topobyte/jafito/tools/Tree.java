@@ -84,6 +84,12 @@ public class Tree
 	private void tree(Path path, Path relative, Stack<Boolean> stack,
 			boolean isLast) throws IOException
 	{
+		if (Files.isSymbolicLink(path)) {
+			Path target = Files.readSymbolicLink(path);
+			print(path, relative, stack, isLast, " -> " + target);
+			return;
+		}
+
 		try {
 			List<Path> files = Util.getFiles(path, false);
 
