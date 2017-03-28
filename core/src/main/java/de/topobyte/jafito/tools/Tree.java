@@ -53,10 +53,10 @@ public class Tree
 	{
 		Stack<Boolean> stack = new Stack<Boolean>();
 		terminal.println(Ansi.Color.BLUE, true, path.toString());
-		tree1(path, 1, stack);
+		tree(path, 1, stack);
 	}
 
-	private void tree1(Path path, int depth, Stack<Boolean> stack)
+	private void tree(Path path, int depth, Stack<Boolean> stack)
 			throws IOException
 	{
 		List<Path> files = Util.getFiles(path, false);
@@ -78,7 +78,7 @@ public class Tree
 
 			if (Files.isDirectory(file)) {
 				stack.push(isLast);
-				tree1(file, depth + 1, stack);
+				tree(file, depth + 1, stack);
 				stack.pop();
 			}
 		}
