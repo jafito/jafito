@@ -33,6 +33,9 @@ public class Tree
 
 	private Terminal terminal;
 
+	private int numDirectories = 0;
+	private int numFiles = 0;
+
 	public Tree()
 	{
 		terminal = new Terminal();
@@ -54,6 +57,10 @@ public class Tree
 		Stack<Boolean> stack = new Stack<Boolean>();
 		terminal.println(Ansi.Color.BLUE, true, path.toString());
 		tree(path, stack);
+
+		System.out.println();
+		System.out.println(String.format("%d directories, %d files",
+				numDirectories, numFiles));
 	}
 
 	private void tree(Path path, Stack<Boolean> stack) throws IOException
@@ -76,9 +83,12 @@ public class Tree
 			}
 
 			if (Files.isDirectory(file)) {
+				numDirectories += 1;
 				stack.push(isLast);
 				tree(file, stack);
 				stack.pop();
+			} else {
+				numFiles += 1;
 			}
 		}
 	}
