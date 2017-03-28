@@ -55,8 +55,12 @@ public class Ls
 		List<Path> files = Util.getFiles(path, false);
 		for (Path file : files) {
 			Path relative = path.relativize(file);
-			if (Files.isDirectory(file)) {
+			if (Files.isSymbolicLink(file)) {
+				terminal.println(Ansi.Color.CYAN, true, relative.toString());
+			} else if (Files.isDirectory(file)) {
 				terminal.println(Ansi.Color.BLUE, true, relative.toString());
+			} else if (Files.isExecutable(file)) {
+				terminal.println(Ansi.Color.GREEN, true, relative.toString());
 			} else {
 				System.out.println(relative);
 			}
