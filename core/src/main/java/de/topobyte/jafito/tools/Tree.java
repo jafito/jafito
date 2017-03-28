@@ -23,36 +23,19 @@ import java.nio.file.Path;
 import java.util.List;
 
 import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.Ansi.Color;
-import org.fusesource.jansi.AnsiConsole;
-import org.fusesource.jansi.internal.CLibrary;
 
 import de.topobyte.adt.misc.Stack;
+import de.topobyte.jafito.util.Terminal;
 import de.topobyte.jafito.util.Util;
-import jline.Terminal;
-import jline.TerminalFactory;
 
 public class Tree
 {
 
-	private int width;
-	private int height;
-	private boolean isTTY;
+	private Terminal terminal;
 
 	public Tree()
 	{
-		Terminal terminal = TerminalFactory.get();
-		width = terminal.getWidth();
-		height = terminal.getHeight();
-
-		isTTY = false;
-		try {
-			if (CLibrary.isatty(CLibrary.STDOUT_FILENO) != 0) {
-				isTTY = true;
-			}
-		} catch (NoClassDefFoundError | UnsatisfiedLinkError ignore) {
-			// ignore errors, assume not on TTY
-		}
+		terminal = new Terminal();
 	}
 
 	public void tree(List<Path> paths) throws IOException
@@ -69,7 +52,7 @@ public class Tree
 	private void tree(Path path) throws IOException
 	{
 		Stack<Boolean> stack = new Stack<Boolean>();
-		println(Ansi.Color.BLUE, true, path.toString());
+		terminal.println(Ansi.Color.BLUE, true, path.toString());
 		tree1(path, 1, stack);
 	}
 
@@ -86,8 +69,8 @@ public class Tree
 			String name = relative.toString();
 
 			if (Files.isDirectory(file)) {
-				print(Ansi.Color.BLACK, false, prefix);
-				println(Ansi.Color.BLUE, true, name);
+				terminal.print(Ansi.Color.BLACK, false, prefix);
+				terminal.println(Ansi.Color.BLUE, true, name);
 			} else {
 				System.out.print(prefix);
 				System.out.println(name);
@@ -98,38 +81,6 @@ public class Tree
 				tree1(file, depth + 1, stack);
 				stack.pop();
 			}
-		}
-	}
-
-	private void print(Color color, boolean bold, String string)
-	{
-		if (isTTY) {
-			Ansi ansi = Ansi.ansi();
-			ansi.fg(color);
-			if (bold) {
-				ansi.bold();
-			}
-			ansi.a(string);
-			ansi.reset();
-			AnsiConsole.out.print(ansi);
-		} else {
-			System.out.print(string);
-		}
-	}
-
-	private void println(Color color, boolean bold, String string)
-	{
-		if (isTTY) {
-			Ansi ansi = Ansi.ansi();
-			ansi.fg(color);
-			if (bold) {
-				ansi.bold();
-			}
-			ansi.a(string);
-			ansi.reset();
-			AnsiConsole.out.println(ansi);
-		} else {
-			System.out.println(string);
 		}
 	}
 

@@ -23,35 +23,18 @@ import java.nio.file.Path;
 import java.util.List;
 
 import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.Ansi.Color;
-import org.fusesource.jansi.AnsiConsole;
-import org.fusesource.jansi.internal.CLibrary;
 
+import de.topobyte.jafito.util.Terminal;
 import de.topobyte.jafito.util.Util;
-import jline.Terminal;
-import jline.TerminalFactory;
 
 public class Ls
 {
 
-	private int width;
-	private int height;
-	private boolean isTTY;
+	private Terminal terminal;
 
 	public Ls()
 	{
-		Terminal terminal = TerminalFactory.get();
-		width = terminal.getWidth();
-		height = terminal.getHeight();
-
-		isTTY = false;
-		try {
-			if (CLibrary.isatty(CLibrary.STDOUT_FILENO) != 0) {
-				isTTY = true;
-			}
-		} catch (NoClassDefFoundError | UnsatisfiedLinkError ignore) {
-			// ignore errors, assume not on TTY
-		}
+		terminal = new Terminal();
 	}
 
 	public void list(List<Path> paths) throws IOException
@@ -73,26 +56,10 @@ public class Ls
 		for (Path file : files) {
 			Path relative = path.relativize(file);
 			if (Files.isDirectory(file)) {
-				println(Ansi.Color.BLUE, true, relative.toString());
+				terminal.println(Ansi.Color.BLUE, true, relative.toString());
 			} else {
 				System.out.println(relative);
 			}
-		}
-	}
-
-	private void println(Color color, boolean bold, String string)
-	{
-		if (isTTY) {
-			Ansi ansi = Ansi.ansi();
-			ansi.fg(color);
-			if (bold) {
-				ansi.bold();
-			}
-			ansi.a(string);
-			ansi.reset();
-			AnsiConsole.out.println(ansi);
-		} else {
-			System.out.println(string);
 		}
 	}
 
