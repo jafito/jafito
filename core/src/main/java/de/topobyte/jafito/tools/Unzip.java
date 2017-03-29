@@ -73,4 +73,68 @@ public class Unzip
 				totalSize, numFiles));
 	}
 
+	public void listVerbose(Path path) throws IOException
+	{
+		ZipFile zf = new ZipFile(path.toFile());
+		Enumeration<? extends ZipEntry> entries = zf.entries();
+
+		int numFiles = 0;
+		long totalSize = 0;
+		long totalCompressed = 0;
+
+		System.out.println("Archive: " + path);
+		System.out.println(
+				" Length   Method    Size  Cmpr    Date    Time   CRC-32   Name");
+		System.out.println(
+				"--------  ------  ------- ---- ---------- ----- --------  ----");
+
+		while (entries.hasMoreElements()) {
+			ZipEntry entry = entries.nextElement();
+			long size = entry.getSize();
+			long compressed = entry.getCompressedSize();
+			String name = entry.getName();
+			long time = entry.getTime();
+			int method = entry.getMethod();
+			long crc = entry.getCrc();
+
+			String m = null;
+			if (method == ZipEntry.STORED) {
+				m = "Stored";
+			} else if (method == ZipEntry.DEFLATED) {
+				m = "Defl:N";
+			} else {
+				m = "Undef.";
+			}
+
+			int ratio = ratio(size, compressed);
+
+			String date = pattern.print(time);
+
+			System.out.println(String.format("%8d  %s  %7d  %2d%% %s %08x  %s",
+					size, m, compressed, ratio, date, crc, name));
+
+			numFiles += 1;
+			totalSize += size;
+			totalCompressed += compressed;
+		}
+		zf.close();
+
+		int totalRatio = ratio(totalSize, totalCompressed);
+
+		System.out.println(
+				"--------          -------  ---                            -------");
+		System.out.println(String.format(
+				"%8d          %7d  %2d%%                            %d files",
+				totalSize, totalCompressed, totalRatio, numFiles));
+	}
+
+	private int ratio(long size, long compressed)
+	{
+		int ratio = 0;
+		if (size != 0) {
+			ratio = 100 - (int) (compressed / (double) size * 100);
+		}
+		return ratio;
+	}
+
 }
