@@ -190,13 +190,13 @@ public class Tree
 			if (values.get(i)) {
 				buffer.append("    ");
 			} else {
-				buffer.append("|   ");
+				buffer.append("│   ");
 			}
 		}
 		if (isLast) {
-			buffer.append("`-- ");
+			buffer.append("└── ");
 		} else {
-			buffer.append("|-- ");
+			buffer.append("├── ");
 		}
 		return buffer.toString();
 	}
