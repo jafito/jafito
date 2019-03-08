@@ -17,15 +17,20 @@
 
 package de.topobyte.jafito.util;
 
+import java.io.IOException;
+
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
 import org.fusesource.jansi.AnsiConsole;
 import org.fusesource.jansi.internal.CLibrary;
-
-import jline.TerminalFactory;
+import org.jline.terminal.TerminalBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Terminal
 {
+
+	final static Logger logger = LoggerFactory.getLogger(Terminal.class);
 
 	private int width;
 	private int height;
@@ -33,9 +38,14 @@ public class Terminal
 
 	public Terminal()
 	{
-		jline.Terminal terminal = TerminalFactory.get();
-		width = terminal.getWidth();
-		height = terminal.getHeight();
+		org.jline.terminal.Terminal terminal;
+		try {
+			terminal = TerminalBuilder.builder().build();
+			width = terminal.getWidth();
+			height = terminal.getHeight();
+		} catch (IOException e) {
+			logger.warn("Error while creating terminal", e);
+		}
 
 		isTTY = false;
 		try {

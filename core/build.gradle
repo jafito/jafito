@@ -12,7 +12,7 @@ dependencies {
     compile 'org.freedesktop.tango:tango-icon-theme:0.8.90'
 
     compile 'org.fusesource.jansi:jansi:1.15'
-    compile 'jline:jline:2.14.2'
+    compile 'org.jline:jline:3.10.0'
 
     testRuntime 'org.slf4j:slf4j-log4j12:1.6.1'
     testRuntime 'log4j:log4j:1.2.16'
