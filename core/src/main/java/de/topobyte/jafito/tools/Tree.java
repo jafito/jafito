@@ -163,13 +163,13 @@ public class Tree
 		String name = relative.toString();
 
 		if (Files.isSymbolicLink(file)) {
-			terminal.print(Ansi.Color.BLACK, false, prefix);
+			System.out.print(prefix);
 			terminal.print(Ansi.Color.CYAN, true, name);
 		} else if (Files.isDirectory(file)) {
-			terminal.print(Ansi.Color.BLACK, false, prefix);
+			System.out.print(prefix);
 			terminal.print(Ansi.Color.BLUE, true, name);
 		} else if (Files.isExecutable(file)) {
-			terminal.print(Ansi.Color.BLACK, false, prefix);
+			System.out.print(prefix);
 			terminal.print(Ansi.Color.GREEN, true, name);
 		} else {
 			System.out.print(prefix);
