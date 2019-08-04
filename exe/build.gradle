@@ -1,3 +1,36 @@
+buildscript {
+    repositories {
+        maven { url 'http://mvn.topobyte.de' }
+    }
+    dependencies {
+        classpath 'de.topobyte:gradle-launch-and-install-plugin:0.0.3'
+    }
+}
+
+apply plugin: 'application'
+apply plugin: 'de.topobyte.launch-and-install-gradle-plugin'
+
+startScripts.enabled = false
+
+launchAndInstall {
+    installationPath = 'jafito/jafito'
+    makeselfLabel = 'Jafito'
+    def extraArgs = ['-Dlog4j.configuration=file:APP_HOME_PLACEHOLDER/log4j.properties']
+	createScript(project, 'de.topobyte.jafito.filemanager.RunFileManager', 'jafito-browser', extraArgs)
+	createScript(project, 'de.topobyte.jafito.tools.RunLs', 'jafito-ls', extraArgs)
+	createScript(project, 'de.topobyte.jafito.tools.RunTree', 'jafito-tree', extraArgs)
+	createScript(project, 'de.topobyte.jafito.tools.RunUnzip', 'jafito-unzip', extraArgs)
+}
+
+distributions {
+    main {
+        baseName = 'jafito'
+        contents {
+            from('log4j.properties')
+        }
+    }
+}
+
 dependencies {
     compile project(':jafito-core')
 
