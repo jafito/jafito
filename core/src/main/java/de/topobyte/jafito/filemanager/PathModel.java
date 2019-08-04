@@ -143,7 +143,7 @@ public class PathModel implements TreeTableModel
 				}
 			} catch (IOException e) {
 				logger.error(String.format(
-						"Unable to get determine child count [%s]", parent), e);
+						"Unable to determine child count [%s]", parent), e);
 			}
 		}
 		return 0;
