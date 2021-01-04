@@ -58,7 +58,7 @@ public class Tree
 
 	private void tree(Path path) throws IOException
 	{
-		Stack<Boolean> stack = new Stack<Boolean>();
+		Stack<Boolean> stack = new Stack<>();
 
 		try {
 			List<Path> files = Util.getFiles(path, false);
