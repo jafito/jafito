@@ -19,7 +19,7 @@ package de.topobyte.jafito.filemanager.cellrenderers;
 
 import javax.swing.SwingConstants;
 
-import de.topobyte.jafito.filemanager.SizeFormatter;
+import de.topobyte.various.utils.SizeFormatter;
 
 public class SizeCellRenderer extends OurDefaultTableCellRenderer
 {
