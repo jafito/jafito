@@ -66,7 +66,8 @@ public class FileBrowserFrame extends JFrame
 
 		JMenus.addItem(menuNavigate, actions.getGoUp(),
 				InputEvent.ALT_DOWN_MASK, KeyEvent.VK_UP);
-		menuNavigate.add(actions.getGoHome());
+		JMenus.addItem(menuNavigate, actions.getGoHome(),
+				InputEvent.ALT_DOWN_MASK, KeyEvent.VK_HOME);
 		JMenus.addItem(menuNavigate, actions.getOpenLocation(),
 				InputEvent.CTRL_DOWN_MASK, KeyEvent.VK_L);
 
