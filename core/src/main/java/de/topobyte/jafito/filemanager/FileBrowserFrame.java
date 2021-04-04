@@ -17,6 +17,8 @@
 
 package de.topobyte.jafito.filemanager;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.nio.file.Path;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -25,6 +27,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import de.topobyte.jafito.filemanager.actions.FileBrowserActions;
+import de.topobyte.swing.util.JMenus;
 
 public class FileBrowserFrame extends JFrame
 {
@@ -61,7 +64,8 @@ public class FileBrowserFrame extends JFrame
 
 		menuView.add(new JCheckBoxMenuItem(actions.getShowHidden()));
 
-		menuNavigate.add(actions.getGoUp());
+		JMenus.addItem(menuNavigate, actions.getGoUp(),
+				InputEvent.ALT_DOWN_MASK, KeyEvent.VK_UP);
 		menuNavigate.add(actions.getGoHome());
 
 		return menuBar;
