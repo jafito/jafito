@@ -24,8 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
-import de.topobyte.jafito.filemanager.actions.QuitAction;
-import de.topobyte.jafito.filemanager.actions.ShowHiddenFilesAction;
+import de.topobyte.jafito.filemanager.actions.FileBrowserActions;
 
 public class FileBrowserFrame extends JFrame
 {
@@ -47,6 +46,8 @@ public class FileBrowserFrame extends JFrame
 
 	private JMenuBar createMenu(FileBrowser browser)
 	{
+		FileBrowserActions actions = browser.getActions();
+
 		JMenu menuFile = new JMenu("File");
 		JMenu menuView = new JMenu("View");
 
@@ -54,12 +55,9 @@ public class FileBrowserFrame extends JFrame
 		menuBar.add(menuFile);
 		menuBar.add(menuView);
 
-		QuitAction quit = new QuitAction(browser);
-		ShowHiddenFilesAction showHidden = new ShowHiddenFilesAction(browser);
+		menuFile.add(actions.getQuit());
 
-		menuFile.add(quit);
-
-		menuView.add(new JCheckBoxMenuItem(showHidden));
+		menuView.add(new JCheckBoxMenuItem(actions.getShowHidden()));
 
 		return menuBar;
 	}

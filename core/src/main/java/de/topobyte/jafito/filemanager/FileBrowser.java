@@ -45,12 +45,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.topobyte.awt.util.GridBagConstraintsEditor;
-import de.topobyte.jafito.filemanager.actions.GoHomeAction;
-import de.topobyte.jafito.filemanager.actions.GoUpAction;
-import de.topobyte.jafito.filemanager.actions.RefreshAction;
+import de.topobyte.jafito.filemanager.actions.FileBrowserActions;
 import de.topobyte.jafito.filemanager.cellrenderers.DateCellRenderer;
 import de.topobyte.jafito.filemanager.cellrenderers.OurDefaultTableCellRenderer;
 import de.topobyte.jafito.filemanager.cellrenderers.SizeCellRenderer;
+import lombok.Getter;
 
 public class FileBrowser extends JPanel
 {
@@ -65,6 +64,9 @@ public class FileBrowser extends JPanel
 		public void locationChanged(Path newLocation);
 
 	}
+
+	@Getter
+	private FileBrowserActions actions;
 
 	private JXTreeTable treeTable;
 
@@ -88,6 +90,8 @@ public class FileBrowser extends JPanel
 
 		this.path = path;
 
+		actions = new FileBrowserActions(this);
+
 		// file browser tree table
 
 		treeTable = new JXTreeTable();
@@ -96,9 +100,9 @@ public class FileBrowser extends JPanel
 
 		// toolbar
 
-		up = toolbarButton(new GoUpAction(this));
-		home = toolbarButton(new GoHomeAction(this));
-		refresh = toolbarButton(new RefreshAction(this));
+		up = toolbarButton(actions.getGoUp());
+		home = toolbarButton(actions.getGoHome());
+		refresh = toolbarButton(actions.getRefresh());
 
 		JPanel toolbar = createToolbar();
 
