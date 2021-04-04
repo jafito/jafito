@@ -45,6 +45,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.topobyte.awt.util.GridBagConstraintsEditor;
+import de.topobyte.jafito.filemanager.OpenWithDialog.Result;
 import de.topobyte.jafito.filemanager.actions.FileBrowserActions;
 import de.topobyte.jafito.filemanager.cellrenderers.DateCellRenderer;
 import de.topobyte.jafito.filemanager.cellrenderers.OurDefaultTableCellRenderer;
@@ -298,7 +299,17 @@ public class FileBrowser extends JPanel
 				openPdf(path);
 			} else if (isPng || isJpg) {
 				openImage(path);
+			} else {
+				showOpenWithDialog(path);
 			}
+		}
+	}
+
+	private void showOpenWithDialog(Path file)
+	{
+		Result result = OpenWithDialog.showDialog(this);
+		if (result.isValid()) {
+			run(result.getCommand(), file);
 		}
 	}
 
@@ -312,8 +323,8 @@ public class FileBrowser extends JPanel
 		try {
 			pb.start();
 		} catch (IOException e) {
-			logger.error(String.format("Error while running command '%s'"),
-					args.toString(), e);
+			logger.error(String.format("Error while running command '%s'",
+					args.toString()), e);
 		}
 	}
 
