@@ -1,3 +1,12 @@
+plugins {
+    id 'io.franzbecker.gradle-lombok' version '1.14'
+}
+
+lombok {
+    version = '1.18.2'
+    sha256 = ""
+}
+
 wrapper {
     gradleVersion = '5.2.1'
 }
@@ -11,6 +20,7 @@ subprojects {
     apply plugin: 'eclipse'
     apply plugin: 'java'
     apply plugin: 'maven'
+    apply plugin: 'io.franzbecker.gradle-lombok'
 
     repositories {
         maven {
