@@ -73,6 +73,7 @@ public class FileBrowser extends JPanel
 	private Path path;
 	private boolean showHiddenFiles = true;
 
+	@Getter
 	private JTextField address = new JTextField();
 	private JButton up;
 	private JButton home;
