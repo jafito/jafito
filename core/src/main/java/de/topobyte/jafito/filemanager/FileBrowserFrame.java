@@ -50,14 +50,19 @@ public class FileBrowserFrame extends JFrame
 
 		JMenu menuFile = new JMenu("File");
 		JMenu menuView = new JMenu("View");
+		JMenu menuNavigate = new JMenu("Navigate");
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(menuFile);
 		menuBar.add(menuView);
+		menuBar.add(menuNavigate);
 
 		menuFile.add(actions.getQuit());
 
 		menuView.add(new JCheckBoxMenuItem(actions.getShowHidden()));
+
+		menuNavigate.add(actions.getGoUp());
+		menuNavigate.add(actions.getGoHome());
 
 		return menuBar;
 	}
