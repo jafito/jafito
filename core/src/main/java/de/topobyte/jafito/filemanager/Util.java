@@ -17,12 +17,22 @@
 
 package de.topobyte.jafito.filemanager;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JComponent;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.topobyte.swing.util.BorderHelper;
 
 public class Util
 {
+
+	final static Logger logger = LoggerFactory.getLogger(Util.class);
 
 	public static void defaultRightPadding(
 			Iterable<? extends JComponent> components)
@@ -35,6 +45,26 @@ public class Util
 	public static void defaultRightPadding(JComponent component)
 	{
 		BorderHelper.addEmptyBorder(component, 0, 0, 0, 5);
+	}
+
+	public static void run(String command, Path file)
+	{
+		List<String> args = new ArrayList<>();
+		args.add(command);
+		args.add(file.toString());
+		run(args);
+	}
+
+	public static void run(List<String> args)
+	{
+		ProcessBuilder pb = new ProcessBuilder();
+		pb.command(args);
+		try {
+			pb.start();
+		} catch (IOException e) {
+			logger.error(String.format("Error while running command '%s'",
+					args.toString()), e);
+		}
 	}
 
 }

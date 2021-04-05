@@ -314,33 +314,18 @@ public class FileBrowser extends JPanel
 	{
 		Result result = OpenWithDialog.showDialog(this);
 		if (result.isValid()) {
-			run(result.getCommand(), file);
-		}
-	}
-
-	private void run(String command, Path file)
-	{
-		ProcessBuilder pb = new ProcessBuilder();
-		List<String> args = new ArrayList<>();
-		args.add(command);
-		args.add(file.toString());
-		pb.command(args);
-		try {
-			pb.start();
-		} catch (IOException e) {
-			logger.error(String.format("Error while running command '%s'",
-					args.toString()), e);
+			Util.run(result.getCommand(), file);
 		}
 	}
 
 	private void openPdf(Path file)
 	{
-		run("evince", file);
+		Util.run("evince", file);
 	}
 
 	private void openImage(Path file)
 	{
-		run("eog", file);
+		Util.run("eog", file);
 	}
 
 }
