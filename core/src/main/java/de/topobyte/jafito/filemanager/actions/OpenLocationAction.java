@@ -32,7 +32,7 @@ public class OpenLocationAction extends FileBrowserAction
 	public OpenLocationAction(FileBrowser browser)
 	{
 		super(browser, "Open Location", "Select the address bar", null);
-		setIcon(new EmptyIcon(24));
+		setIcon(new EmptyIcon(22));
 	}
 
 	@Override
