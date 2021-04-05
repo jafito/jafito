@@ -27,12 +27,14 @@ import com.google.common.base.Splitter;
 import de.topobyte.jafito.filemanager.FileBrowser;
 import de.topobyte.jafito.filemanager.Util;
 import de.topobyte.jafito.filemanager.config.Command;
+import lombok.Getter;
 
 public class DirCommandAction extends FileBrowserAction
 {
 
 	private static final long serialVersionUID = 1L;
 
+	@Getter
 	private Command command;
 
 	public DirCommandAction(FileBrowser browser, Command command)
