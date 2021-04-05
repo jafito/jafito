@@ -18,6 +18,7 @@
 package de.topobyte.jafito.filemanager.actions;
 
 import de.topobyte.jafito.filemanager.FileBrowser;
+import de.topobyte.swing.util.EmptyIcon;
 
 public class ShowHiddenFilesAction extends FileBrowserActionBoolean
 {
@@ -28,6 +29,7 @@ public class ShowHiddenFilesAction extends FileBrowserActionBoolean
 	{
 		super(browser, "Show Hidden Files", "Toggle visibility of hidden files",
 				null);
+		setIcon(new EmptyIcon(22));
 	}
 
 	@Override
