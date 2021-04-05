@@ -21,7 +21,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.nio.file.Path;
 
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -68,7 +67,8 @@ public class FileBrowserFrame extends JFrame
 
 		menuFile.add(actions.getQuit());
 
-		menuView.add(new JCheckBoxMenuItem(actions.getShowHidden()));
+		JMenus.addCheckbox(menuView, actions.getShowHidden(),
+				InputEvent.CTRL_DOWN_MASK, KeyEvent.VK_H);
 
 		JMenus.addItem(menuNavigate, actions.getGoUp(),
 				InputEvent.ALT_DOWN_MASK, KeyEvent.VK_UP);
