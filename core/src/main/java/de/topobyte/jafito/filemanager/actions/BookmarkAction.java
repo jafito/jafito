@@ -1,4 +1,4 @@
-// Copyright 2021 Sebastian Kuerten
+// Copyright 2017 Sebastian Kuerten
 //
 // This file is part of jafito.
 //
@@ -19,29 +19,27 @@ package de.topobyte.jafito.filemanager.actions;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.JTextField;
-
 import de.topobyte.jafito.filemanager.FileBrowser;
-import de.topobyte.swing.util.EmptyIcon;
+import de.topobyte.jafito.filemanager.config.Bookmark;
 
-public class OpenLocationAction extends FileBrowserAction
+public class BookmarkAction extends FileBrowserAction
 {
 
 	private static final long serialVersionUID = 1L;
 
-	public OpenLocationAction(FileBrowser browser)
+	private Bookmark bookmark;
+
+	public BookmarkAction(FileBrowser browser, Bookmark bookmark)
 	{
-		super(browser, "Open Location", "Select the address bar", null);
-		setIcon(new EmptyIcon(24));
+		super(browser, bookmark.getName(), "Navigate to " + bookmark.getPath(),
+				"org/freedesktop/tango/22x22/actions/bookmark-new.png");
+		this.bookmark = bookmark;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		JTextField address = browser.getAddress();
-		address.grabFocus();
-		String text = address.getText();
-		address.select(0, text.length());
+		browser.go(bookmark.getPath());
 	}
 
 }

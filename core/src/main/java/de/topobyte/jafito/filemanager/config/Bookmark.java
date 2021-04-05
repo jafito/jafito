@@ -17,33 +17,22 @@
 
 package de.topobyte.jafito.filemanager.config;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
-import de.topobyte.system.utils.SystemPaths;
 import lombok.Getter;
 
-public class FileBrowserConfig
+public class Bookmark
 {
 
 	@Getter
-	private List<Bookmark> bookmarks = new ArrayList<>();
+	private String name;
+	@Getter
+	private Path path;
 
-	public void load()
-			throws ParserConfigurationException, SAXException, IOException
+	public Bookmark(String name, Path path)
 	{
-		Path dirConfig = SystemPaths.HOME.resolve(".config/jafito");
-		Path fileBookmarks = dirConfig.resolve("bookmarks.xml");
-		if (Files.exists(fileBookmarks)) {
-			BookmarksReader.read(this, fileBookmarks);
-		}
+		this.name = name;
+		this.path = path;
 	}
 
 }

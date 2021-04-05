@@ -72,7 +72,9 @@ public class FileBrowser extends JPanel
 
 	private JXTreeTable treeTable;
 
+	@Getter
 	private Path path;
+	@Getter
 	private FileBrowserConfig config;
 	private boolean showHiddenFiles = true;
 

@@ -18,10 +18,14 @@
 package de.topobyte.jafito.filemanager;
 
 import java.awt.Dimension;
+import java.io.IOException;
 import java.nio.file.Path;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import de.topobyte.jafito.filemanager.config.FileBrowserConfig;
 
@@ -31,7 +35,12 @@ public class BrowserTesting
 	public static void test(Path path)
 	{
 		FileBrowserConfig config = new FileBrowserConfig();
-		config.load();
+		try {
+			config.load();
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			System.out.println("Error while loading configuration");
+			e.printStackTrace();
+		}
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

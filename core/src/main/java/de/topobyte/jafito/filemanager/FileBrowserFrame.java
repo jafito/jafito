@@ -26,8 +26,11 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
+import de.topobyte.jafito.filemanager.actions.BookmarkAction;
 import de.topobyte.jafito.filemanager.actions.FileBrowserActions;
+import de.topobyte.jafito.filemanager.config.Bookmark;
 import de.topobyte.jafito.filemanager.config.FileBrowserConfig;
+import de.topobyte.swing.util.ImageLoader;
 import de.topobyte.swing.util.JMenus;
 
 public class FileBrowserFrame extends JFrame
@@ -50,6 +53,8 @@ public class FileBrowserFrame extends JFrame
 
 	private JMenuBar createMenu(FileBrowser browser)
 	{
+		FileBrowserConfig config = browser.getConfig();
+
 		FileBrowserActions actions = browser.getActions();
 
 		JMenu menuFile = new JMenu("File");
@@ -71,6 +76,15 @@ public class FileBrowserFrame extends JFrame
 				InputEvent.ALT_DOWN_MASK, KeyEvent.VK_HOME);
 		JMenus.addItem(menuNavigate, actions.getOpenLocation(),
 				InputEvent.CTRL_DOWN_MASK, KeyEvent.VK_L);
+
+		JMenu menuFavorites = new JMenu("Favorites");
+		menuFavorites.setIcon(ImageLoader
+				.load("org/freedesktop/tango/22x22/actions/bookmark-new.png"));
+		menuNavigate.add(menuFavorites);
+
+		for (Bookmark bookmark : config.getBookmarks()) {
+			menuFavorites.add(new BookmarkAction(browser, bookmark));
+		}
 
 		return menuBar;
 	}

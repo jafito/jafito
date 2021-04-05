@@ -18,31 +18,40 @@
 package de.topobyte.jafito.filemanager.config;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Paths;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import de.topobyte.system.utils.SystemPaths;
-import lombok.Getter;
+import de.topobyte.melon.w3cdom.DomUtil;
 
-public class FileBrowserConfig
+public class BookmarksReader
 {
 
-	@Getter
-	private List<Bookmark> bookmarks = new ArrayList<>();
-
-	public void load()
+	public static void read(FileBrowserConfig config, Path file)
 			throws ParserConfigurationException, SAXException, IOException
 	{
-		Path dirConfig = SystemPaths.HOME.resolve(".config/jafito");
-		Path fileBookmarks = dirConfig.resolve("bookmarks.xml");
-		if (Files.exists(fileBookmarks)) {
-			BookmarksReader.read(this, fileBookmarks);
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document doc = db.parse(file.toFile());
+
+		NodeList bookmarkNodes = doc.getElementsByTagName("bookmark");
+		for (int i = 0; i < bookmarkNodes.getLength(); i++) {
+			Node node = bookmarkNodes.item(i);
+			NamedNodeMap attrs = node.getAttributes();
+			String name = DomUtil.getValue(attrs, "name");
+			String path = DomUtil.getValue(attrs, "path");
+
+			Bookmark bookmark = new Bookmark(name, Paths.get(path));
+			config.getBookmarks().add(bookmark);
 		}
 	}
 
