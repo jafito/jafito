@@ -27,6 +27,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import de.topobyte.jafito.filemanager.actions.FileBrowserActions;
+import de.topobyte.jafito.filemanager.config.FileBrowserConfig;
 import de.topobyte.swing.util.JMenus;
 
 public class FileBrowserFrame extends JFrame
@@ -34,11 +35,11 @@ public class FileBrowserFrame extends JFrame
 
 	private static final long serialVersionUID = 1L;
 
-	public FileBrowserFrame(Path path)
+	public FileBrowserFrame(Path path, FileBrowserConfig config)
 	{
 		super("File Manager");
 
-		FileBrowser browser = new FileBrowser(path);
+		FileBrowser browser = new FileBrowser(path, config);
 		getContentPane().add(browser);
 
 		// menu

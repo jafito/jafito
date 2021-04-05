@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import de.topobyte.jafito.filemanager.config.FileBrowserConfig;
 import de.topobyte.system.utils.SystemPaths;
 
 public class RunFileManager
@@ -32,11 +33,14 @@ public class RunFileManager
 	{
 		Path path = SystemPaths.HOME;
 
+		FileBrowserConfig config = new FileBrowserConfig();
+		config.load();
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run()
 			{
-				FileBrowserFrame frame = new FileBrowserFrame(path);
+				FileBrowserFrame frame = new FileBrowserFrame(path, config);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setSize(new Dimension(800, 600));
 				frame.setVisible(true);

@@ -1,4 +1,4 @@
-// Copyright 2017 Sebastian Kuerten
+// Copyright 2021 Sebastian Kuerten
 //
 // This file is part of jafito.
 //
@@ -15,34 +15,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with jafito. If not, see <http://www.gnu.org/licenses/>.
 
-package de.topobyte.jafito.filemanager;
+package de.topobyte.jafito.filemanager.config;
 
-import java.awt.Dimension;
-import java.nio.file.Path;
-
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-
-import de.topobyte.jafito.filemanager.config.FileBrowserConfig;
-
-public class BrowserTesting
+public class FileBrowserConfig
 {
 
-	public static void test(Path path)
+	public void load()
 	{
-		FileBrowserConfig config = new FileBrowserConfig();
-		config.load();
-
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run()
-			{
-				FileBrowserFrame frame = new FileBrowserFrame(path, config);
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.setSize(new Dimension(800, 600));
-				frame.setVisible(true);
-			}
-		});
+		// TODO: implement
 	}
 
 }

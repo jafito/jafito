@@ -50,6 +50,7 @@ import de.topobyte.jafito.filemanager.actions.FileBrowserActions;
 import de.topobyte.jafito.filemanager.cellrenderers.DateCellRenderer;
 import de.topobyte.jafito.filemanager.cellrenderers.OurDefaultTableCellRenderer;
 import de.topobyte.jafito.filemanager.cellrenderers.SizeCellRenderer;
+import de.topobyte.jafito.filemanager.config.FileBrowserConfig;
 import lombok.Getter;
 
 public class FileBrowser extends JPanel
@@ -72,6 +73,7 @@ public class FileBrowser extends JPanel
 	private JXTreeTable treeTable;
 
 	private Path path;
+	private FileBrowserConfig config;
 	private boolean showHiddenFiles = true;
 
 	@Getter
@@ -86,11 +88,12 @@ public class FileBrowser extends JPanel
 	private SizeCellRenderer sizeRenderer = new SizeCellRenderer();
 	private DateCellRenderer dateRenderer = new DateCellRenderer();
 
-	public FileBrowser(Path path)
+	public FileBrowser(Path path, FileBrowserConfig config)
 	{
 		super(new BorderLayout());
 
 		this.path = path;
+		this.config = config;
 
 		actions = new FileBrowserActions(this);
 
