@@ -73,6 +73,8 @@ public class FileBrowserFrame extends JFrame
 
 		JMenus.addCheckbox(menuView, actions.getShowHidden(),
 				InputEvent.CTRL_DOWN_MASK, KeyEvent.VK_H);
+		JMenus.addItem(menuView, actions.getRefresh(),
+				InputEvent.CTRL_DOWN_MASK, KeyEvent.VK_R);
 
 		JMenus.addItem(menuNavigate, actions.getGoUp(),
 				InputEvent.ALT_DOWN_MASK, KeyEvent.VK_UP);
