@@ -15,44 +15,42 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with jafito. If not, see <http://www.gnu.org/licenses/>.
 
-package de.topobyte.jafito.filemanager;
+package de.topobyte.jafito.filemanager.launch;
 
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Action;
-import javax.swing.Icon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ListCellRenderer;
+import javax.swing.ListSelectionModel;
 
 import de.topobyte.awt.util.GridBagConstraintsEditor;
 import de.topobyte.jafito.filemanager.actions.DirCommandAction;
 import de.topobyte.jafito.filemanager.config.Command;
 import de.topobyte.swing.util.list.ArrayListModel;
 
-public class TestLaunchDialog
+public class LaunchDialog extends JDialog implements ActionListener
 {
 
-	public static void main(String[] args)
+	private static final long serialVersionUID = 1L;
+
+	public LaunchDialog()
 	{
-		JFrame frame = new JFrame("Run…");
-
-		setup(frame);
-
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(new Dimension(400, 300));
-		frame.setVisible(true);
+		setTitle("Run…");
+		setup();
 	}
 
-	private static void setup(JFrame frame)
+	private void setup()
 	{
 		List<DirCommandAction> actions = new ArrayList<>();
 		actions.add(new DirCommandAction(null, new Command("Nemo", "nemo")));
@@ -62,7 +60,7 @@ public class TestLaunchDialog
 				new Command("Konqueror", "konqueror")));
 
 		JPanel panel = new JPanel(new GridBagLayout());
-		frame.setContentPane(panel);
+		setContentPane(panel);
 
 		GridBagConstraintsEditor c = new GridBagConstraintsEditor();
 		c.fill(GridBagConstraints.BOTH).weight(1, 1);
@@ -75,35 +73,52 @@ public class TestLaunchDialog
 		model.addAll(actions, 0);
 		list.setModel(model);
 
-		list.setCellRenderer(new ListCellRenderer<DirCommandAction>() {
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-			private JLabel label = new JLabel();
-			{
-				label.setOpaque(true);
-			}
+		list.setCellRenderer(new CommandCellRenderer());
+		JPanel buttons = new JPanel();
+		buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
 
-			@Override
-			public Component getListCellRendererComponent(
-					JList<? extends DirCommandAction> list,
-					DirCommandAction action, int index, boolean isSelected,
-					boolean cellHasFocus)
-			{
-				Icon icon = (Icon) action.getValue(Action.SMALL_ICON);
-				label.setIcon(icon);
-				label.setText(action.getCommand().getName());
+		JPanel buttonGrid = new JPanel();
+		buttonGrid.setLayout(new GridLayout(1, 2));
 
-				if (isSelected) {
-					label.setBackground(list.getSelectionBackground());
-					label.setForeground(list.getSelectionForeground());
-				} else {
-					label.setBackground(list.getBackground());
-					label.setForeground(list.getForeground());
-				}
+		JButton buttonCancel = new JButton("Cancel");
+		JButton buttonOk = new JButton("Ok");
 
-				return label;
-			}
+		buttonGrid.add(buttonCancel);
+		buttonGrid.add(buttonOk);
 
-		});
+		buttons.add(Box.createHorizontalGlue());
+		buttons.add(buttonGrid);
+
+		c.gridY(1);
+		c.weightY(0);
+		panel.add(buttons, c.getConstraints());
+
+		buttonCancel.setActionCommand("cancel");
+		buttonOk.setActionCommand("ok");
+		buttonCancel.addActionListener(this);
+		buttonOk.addActionListener(this);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		if (e.getActionCommand().equals("ok")) {
+			ok();
+		} else if (e.getActionCommand().equals("cancel")) {
+			cancel();
+		}
+	}
+
+	private void ok()
+	{
+		dispose();
+	}
+
+	private void cancel()
+	{
+		dispose();
 	}
 
 }
