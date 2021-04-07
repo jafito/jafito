@@ -17,27 +17,42 @@
 
 package de.topobyte.jafito.filemanager.launch;
 
-import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.JFrame;
+import de.topobyte.jafito.filemanager.FileBrowser;
+import de.topobyte.jafito.filemanager.actions.DirCommandAction;
+import de.topobyte.jafito.filemanager.config.Command;
+import de.topobyte.jafito.filemanager.config.FileBrowserConfig;
+import de.topobyte.system.utils.SystemPaths;
 
 public class TestLaunchDialog
 {
 
 	public static void main(String[] args)
 	{
-		LaunchDialog dialog = new LaunchDialog();
-		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		dialog.setSize(new Dimension(400, 300));
+		FileBrowserConfig config = new FileBrowserConfig();
+		FileBrowser browser = new FileBrowser(SystemPaths.HOME, config);
+
+		List<DirCommandAction> actions = new ArrayList<>();
+		actions.add(new DirCommandAction(browser, new Command("Nemo", "nemo")));
+		actions.add(
+				new DirCommandAction(browser, new Command("Thunar", "thunar")));
+		actions.add(new DirCommandAction(browser,
+				new Command("Konqueror", "konqueror")));
+
+		LaunchDialog dialog = new LaunchDialog(null, actions);
 		dialog.setVisible(true);
 		dialog.addWindowListener(new WindowAdapter() {
+
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
 				System.exit(0);
 			}
+
 		});
 	}
 

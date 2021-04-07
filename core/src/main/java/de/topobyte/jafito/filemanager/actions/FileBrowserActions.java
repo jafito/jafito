@@ -35,6 +35,8 @@ public class FileBrowserActions
 	private RefreshAction refresh;
 	@Getter
 	private OpenLocationAction openLocation;
+	@Getter
+	private DirCommandsAction dirCommands;
 
 	public FileBrowserActions(FileBrowser browser)
 	{
@@ -44,6 +46,7 @@ public class FileBrowserActions
 		goHome = new GoHomeAction(browser);
 		refresh = new RefreshAction(browser);
 		openLocation = new OpenLocationAction(browser);
+		dirCommands = new DirCommandsAction(browser);
 	}
 
 }

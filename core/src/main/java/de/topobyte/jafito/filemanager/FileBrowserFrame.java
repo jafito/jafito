@@ -92,6 +92,7 @@ public class FileBrowserFrame extends JFrame
 			menuFavorites.add(new BookmarkAction(browser, bookmark));
 		}
 
+		JMenus.addItem(menuRun, actions.getDirCommands(), 0, KeyEvent.VK_F3);
 		for (Command command : config.getDirCommands()) {
 			JMenus.addItem(menuRun, new DirCommandAction(browser, command));
 		}

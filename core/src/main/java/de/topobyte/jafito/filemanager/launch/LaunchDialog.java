@@ -17,18 +17,24 @@
 
 package de.topobyte.jafito.filemanager.launch;
 
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -36,7 +42,6 @@ import javax.swing.ListSelectionModel;
 
 import de.topobyte.awt.util.GridBagConstraintsEditor;
 import de.topobyte.jafito.filemanager.actions.DirCommandAction;
-import de.topobyte.jafito.filemanager.config.Command;
 import de.topobyte.swing.util.list.ArrayListModel;
 
 public class LaunchDialog extends JDialog implements ActionListener
@@ -44,28 +49,30 @@ public class LaunchDialog extends JDialog implements ActionListener
 
 	private static final long serialVersionUID = 1L;
 
-	public LaunchDialog()
+	private List<DirCommandAction> actions;
+
+	private JList<DirCommandAction> list;
+	private JButton buttonOk;
+
+	public LaunchDialog(Component parent, List<DirCommandAction> actions)
 	{
+		this.actions = actions;
 		setTitle("Run…");
-		setup();
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setSize(new Dimension(400, 300));
+		setLocationRelativeTo(parent);
+		init();
 	}
 
-	private void setup()
+	private void init()
 	{
-		List<DirCommandAction> actions = new ArrayList<>();
-		actions.add(new DirCommandAction(null, new Command("Nemo", "nemo")));
-		actions.add(
-				new DirCommandAction(null, new Command("Thunar", "thunar")));
-		actions.add(new DirCommandAction(null,
-				new Command("Konqueror", "konqueror")));
-
 		JPanel panel = new JPanel(new GridBagLayout());
 		setContentPane(panel);
 
 		GridBagConstraintsEditor c = new GridBagConstraintsEditor();
 		c.fill(GridBagConstraints.BOTH).weight(1, 1);
 
-		JList<DirCommandAction> list = new JList<>();
+		list = new JList<>();
 		JScrollPane jsp = new JScrollPane(list);
 		panel.add(jsp, c.getConstraints());
 
@@ -75,6 +82,13 @@ public class LaunchDialog extends JDialog implements ActionListener
 
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+		list.addListSelectionListener(e -> {
+			if (e.getValueIsAdjusting()) {
+				return;
+			}
+			syncButtonState();
+		});
+
 		list.setCellRenderer(new CommandCellRenderer());
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
@@ -83,7 +97,7 @@ public class LaunchDialog extends JDialog implements ActionListener
 		buttonGrid.setLayout(new GridLayout(1, 2));
 
 		JButton buttonCancel = new JButton("Cancel");
-		JButton buttonOk = new JButton("Ok");
+		buttonOk = new JButton("Ok");
 
 		buttonGrid.add(buttonCancel);
 		buttonGrid.add(buttonOk);
@@ -99,6 +113,42 @@ public class LaunchDialog extends JDialog implements ActionListener
 		buttonOk.setActionCommand("ok");
 		buttonCancel.addActionListener(this);
 		buttonOk.addActionListener(this);
+
+		syncButtonState();
+
+		list.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (e.getButton() == MouseEvent.BUTTON1
+						&& e.getClickCount() == 2) {
+					ok();
+				}
+			}
+
+		});
+
+		list.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					ok();
+				} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					cancel();
+				}
+			}
+
+		});
+	}
+
+	private void syncButtonState()
+	{
+		int selected = list.getSelectedIndex();
+		boolean valid = selected != -1;
+		buttonOk.setEnabled(valid);
 	}
 
 	@Override
@@ -113,12 +163,19 @@ public class LaunchDialog extends JDialog implements ActionListener
 
 	private void ok()
 	{
+		run();
 		dispose();
 	}
 
 	private void cancel()
 	{
 		dispose();
+	}
+
+	private void run()
+	{
+		DirCommandAction command = list.getSelectedValue();
+		command.run();
 	}
 
 }

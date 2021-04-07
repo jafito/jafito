@@ -18,51 +18,36 @@
 package de.topobyte.jafito.filemanager.actions;
 
 import java.awt.event.ActionEvent;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.base.Splitter;
-
 import de.topobyte.jafito.filemanager.FileBrowser;
-import de.topobyte.jafito.filemanager.Util;
 import de.topobyte.jafito.filemanager.config.Command;
-import lombok.Getter;
+import de.topobyte.jafito.filemanager.launch.LaunchDialog;
 
-public class DirCommandAction extends FileBrowserAction
+public class DirCommandsAction extends FileBrowserAction
 {
 
 	private static final long serialVersionUID = 1L;
 
-	@Getter
-	private Command command;
-
-	public DirCommandAction(FileBrowser browser, Command command)
+	public DirCommandsAction(FileBrowser browser)
 	{
-		super(browser, command.getName(),
-				String.format("Execute %s in the current directory",
-						command.getName()),
+		super(browser, "Launch in dir",
+				"Select an application to launch in the current directory",
 				"org/freedesktop/tango/22x22/categories/applications-other.png");
-		this.command = command;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		run();
-	}
+		List<Command> dirCommands = browser.getConfig().getDirCommands();
+		List<DirCommandAction> actions = new ArrayList<>();
+		for (Command command : dirCommands) {
+			actions.add(new DirCommandAction(browser, command));
+		}
 
-	public void run()
-	{
-		Path path = browser.getPath();
-		String exec = command.getExec();
-
-		List<String> parts = Splitter.on(" ").splitToList(exec);
-
-		List<String> args = new ArrayList<>();
-		args.addAll(parts);
-		args.add(path.toString());
-		Util.run(args);
+		LaunchDialog dialog = new LaunchDialog(browser, actions);
+		dialog.setVisible(true);
 	}
 
 }
