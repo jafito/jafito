@@ -18,6 +18,7 @@
 package de.topobyte.jafito.filemanager.actions;
 
 import de.topobyte.jafito.filemanager.FileBrowser;
+import de.topobyte.swing.util.EmptyIcon;
 import de.topobyte.swing.util.action.SimpleBooleanAction;
 
 /**
@@ -38,6 +39,9 @@ public abstract class FileBrowserActionBoolean extends SimpleBooleanAction
 	{
 		super(name, description, icon);
 		this.browser = browser;
+		if (icon == null) {
+			setIcon(new EmptyIcon(22));
+		}
 	}
 
 }
