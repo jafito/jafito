@@ -21,7 +21,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -30,8 +29,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -42,6 +39,7 @@ import javax.swing.ListSelectionModel;
 
 import de.topobyte.awt.util.GridBagConstraintsEditor;
 import de.topobyte.jafito.filemanager.actions.DirCommandAction;
+import de.topobyte.jafito.filemanager.util.ButtonList;
 import de.topobyte.swing.util.list.ArrayListModel;
 
 public class LaunchDialog extends JDialog implements ActionListener
@@ -90,28 +88,15 @@ public class LaunchDialog extends JDialog implements ActionListener
 		});
 
 		list.setCellRenderer(new CommandCellRenderer());
-		JPanel buttons = new JPanel();
-		buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
 
-		JPanel buttonGrid = new JPanel();
-		buttonGrid.setLayout(new GridLayout(1, 2));
-
-		JButton buttonCancel = new JButton("Cancel");
-		buttonOk = new JButton("Ok");
-
-		buttonGrid.add(buttonCancel);
-		buttonGrid.add(buttonOk);
-
-		buttons.add(Box.createHorizontalGlue());
-		buttons.add(buttonGrid);
-
+		ButtonList buttons = new ButtonList();
 		c.gridY(1);
 		c.weightY(0);
 		panel.add(buttons, c.getConstraints());
 
-		buttonCancel.setActionCommand("cancel");
-		buttonOk.setActionCommand("ok");
-		buttonCancel.addActionListener(this);
+		buttonOk = buttons.getButtonOk();
+
+		buttons.getButtonCancel().addActionListener(this);
 		buttonOk.addActionListener(this);
 
 		syncButtonState();

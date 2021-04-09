@@ -28,6 +28,7 @@ import javax.swing.JMenuBar;
 import de.topobyte.jafito.filemanager.actions.BookmarkAction;
 import de.topobyte.jafito.filemanager.actions.DirCommandAction;
 import de.topobyte.jafito.filemanager.actions.FileBrowserActions;
+import de.topobyte.jafito.filemanager.actions.SelectionCommandAction;
 import de.topobyte.jafito.filemanager.config.Bookmark;
 import de.topobyte.jafito.filemanager.config.Command;
 import de.topobyte.jafito.filemanager.config.FileBrowserConfig;
@@ -108,6 +109,10 @@ public class FileBrowserFrame extends JFrame
 		for (Command command : config.getDirCommands()) {
 			JMenus.addItem(menuRunDirectory,
 					new DirCommandAction(browser, command));
+		}
+		for (Command command : config.getSelectionCommands()) {
+			JMenus.addItem(menuRunSelection,
+					new SelectionCommandAction(browser, command));
 		}
 
 		JMenus.addItem(menuDebug, actions.getDebugPrintKeyBindings(),
