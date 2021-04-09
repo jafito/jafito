@@ -31,6 +31,7 @@ import de.topobyte.jafito.filemanager.actions.FileBrowserActions;
 import de.topobyte.jafito.filemanager.config.Bookmark;
 import de.topobyte.jafito.filemanager.config.Command;
 import de.topobyte.jafito.filemanager.config.FileBrowserConfig;
+import de.topobyte.swing.util.EmptyIcon;
 import de.topobyte.swing.util.ImageLoader;
 import de.topobyte.swing.util.JMenus;
 
@@ -64,6 +65,11 @@ public class FileBrowserFrame extends JFrame
 		JMenu menuRun = new JMenu("Run");
 		JMenu menuDebug = new JMenu("Debug");
 
+		JMenu menuRunDirectory = new JMenu("Directory");
+		JMenu menuRunSelection = new JMenu("Selection");
+		menuRunDirectory.setIcon(new EmptyIcon(22));
+		menuRunSelection.setIcon(new EmptyIcon(22));
+
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(menuFile);
 		menuBar.add(menuView);
@@ -94,9 +100,14 @@ public class FileBrowserFrame extends JFrame
 			menuFavorites.add(new BookmarkAction(browser, bookmark));
 		}
 
-		JMenus.addItem(menuRun, actions.getDirCommands(), 0, KeyEvent.VK_F3);
+		menuRun.add(menuRunDirectory);
+		menuRun.add(menuRunSelection);
+
+		JMenus.addItem(menuRunDirectory, actions.getDirCommands(), 0,
+				KeyEvent.VK_F3);
 		for (Command command : config.getDirCommands()) {
-			JMenus.addItem(menuRun, new DirCommandAction(browser, command));
+			JMenus.addItem(menuRunDirectory,
+					new DirCommandAction(browser, command));
 		}
 
 		JMenus.addItem(menuDebug, actions.getDebugPrintKeyBindings(),
