@@ -22,7 +22,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
 import de.topobyte.jafito.filemanager.FileBrowser;
-import de.topobyte.swing.util.EmptyIcon;
 
 public class OpenLocationAction extends FileBrowserAction
 {
@@ -32,7 +31,6 @@ public class OpenLocationAction extends FileBrowserAction
 	public OpenLocationAction(FileBrowser browser)
 	{
 		super(browser, "Open Location", "Select the address bar", null);
-		setIcon(new EmptyIcon(22));
 	}
 
 	@Override
