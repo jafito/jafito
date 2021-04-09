@@ -62,12 +62,14 @@ public class FileBrowserFrame extends JFrame
 		JMenu menuView = new JMenu("View");
 		JMenu menuNavigate = new JMenu("Navigate");
 		JMenu menuRun = new JMenu("Run");
+		JMenu menuDebug = new JMenu("Debug");
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(menuFile);
 		menuBar.add(menuView);
 		menuBar.add(menuNavigate);
 		menuBar.add(menuRun);
+		menuBar.add(menuDebug);
 
 		menuFile.add(actions.getQuit());
 
@@ -96,6 +98,9 @@ public class FileBrowserFrame extends JFrame
 		for (Command command : config.getDirCommands()) {
 			JMenus.addItem(menuRun, new DirCommandAction(browser, command));
 		}
+
+		JMenus.addItem(menuDebug, actions.getDebugPrintKeyBindings(),
+				InputEvent.CTRL_DOWN_MASK, KeyEvent.VK_F2);
 
 		return menuBar;
 	}

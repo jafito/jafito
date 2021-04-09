@@ -20,9 +20,13 @@ package de.topobyte.jafito.filemanager;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +68,41 @@ public class Util
 		} catch (IOException e) {
 			logger.error(String.format("Error while running command '%s'",
 					args.toString()), e);
+		}
+	}
+
+	public static void printInputMaps(JComponent component)
+	{
+		Map<Integer, String> types = new LinkedHashMap<>();
+		types.put(JComponent.WHEN_FOCUSED, "WHEN_FOCUSED");
+		types.put(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
+				"WHEN_ANCESTOR_OF_FOCUSED_COMPONENT");
+		types.put(JComponent.WHEN_IN_FOCUSED_WINDOW, "WHEN_IN_FOCUSED_WINDOW");
+
+		for (int type : types.keySet()) {
+			String typeName = types.get(type);
+			System.out.println(typeName);
+			InputMap inputMap = component.getInputMap(type);
+			print(inputMap);
+			while (true) {
+				inputMap = inputMap.getParent();
+				if (inputMap == null) {
+					break;
+				}
+				System.out.println("parent: ");
+				print(inputMap);
+			}
+		}
+	}
+
+	private static void print(InputMap inputMap)
+	{
+		KeyStroke[] keys = inputMap.keys();
+		if (keys != null) {
+			for (KeyStroke stroke : keys) {
+				Object binding = inputMap.get(stroke);
+				System.out.println(String.format("%s → %s", stroke, binding));
+			}
 		}
 	}
 

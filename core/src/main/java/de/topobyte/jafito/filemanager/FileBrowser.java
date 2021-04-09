@@ -21,6 +21,7 @@ import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -32,9 +33,11 @@ import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.TreePath;
@@ -47,6 +50,7 @@ import org.slf4j.LoggerFactory;
 import de.topobyte.awt.util.GridBagConstraintsEditor;
 import de.topobyte.jafito.filemanager.OpenWithDialog.Result;
 import de.topobyte.jafito.filemanager.actions.FileBrowserActions;
+import de.topobyte.jafito.filemanager.actions.OpenSelectedAction;
 import de.topobyte.jafito.filemanager.cellrenderers.DateCellRenderer;
 import de.topobyte.jafito.filemanager.cellrenderers.OurDefaultTableCellRenderer;
 import de.topobyte.jafito.filemanager.cellrenderers.SizeCellRenderer;
@@ -90,6 +94,8 @@ public class FileBrowser extends JPanel
 	private SizeCellRenderer sizeRenderer = new SizeCellRenderer();
 	private DateCellRenderer dateRenderer = new DateCellRenderer();
 
+	private static final String ID_ACTION_OPEN_SELECTED = "openSelected";
+
 	public FileBrowser(Path path, FileBrowserConfig config)
 	{
 		super(new BorderLayout());
@@ -104,6 +110,12 @@ public class FileBrowser extends JPanel
 		treeTable = new JXTreeTable();
 		JScrollPane scroller = new JScrollPane(treeTable);
 		treeTable.addMouseListener(new TreeMouseHandler());
+
+		treeTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
+				.getParent().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+						ID_ACTION_OPEN_SELECTED);
+		treeTable.getActionMap().put(ID_ACTION_OPEN_SELECTED,
+				new OpenSelectedAction(this));
 
 		// toolbar
 
@@ -285,13 +297,27 @@ public class FileBrowser extends JPanel
 					return;
 				}
 				Path last = (Path) treePath.getLastPathComponent();
-				doubleClick(last);
+				open(last);
 			}
 		}
 
 	}
 
-	public void doubleClick(Path path)
+	/*
+	 * Mouse/keyboard helpers
+	 */
+
+	public void openSelected()
+	{
+		if (treeTable.getSelectedRowCount() == 1) {
+			int row = treeTable.getSelectedRow();
+			TreePath treePath = treeTable.getPathForRow(row);
+			Path last = (Path) treePath.getLastPathComponent();
+			open(last);
+		}
+	}
+
+	public void open(Path path)
 	{
 		if (Files.isDirectory(path)) {
 			tryGoToPath(path);
@@ -326,6 +352,15 @@ public class FileBrowser extends JPanel
 	private void openImage(Path file)
 	{
 		Util.run("eog", file);
+	}
+
+	/*
+	 * Debugging
+	 */
+
+	public void printKeyBindings()
+	{
+		Util.printInputMaps(treeTable);
 	}
 
 }

@@ -17,39 +17,24 @@
 
 package de.topobyte.jafito.filemanager.actions;
 
-import de.topobyte.jafito.filemanager.FileBrowser;
-import lombok.Getter;
+import java.awt.event.ActionEvent;
 
-public class FileBrowserActions
+import de.topobyte.jafito.filemanager.FileBrowser;
+
+public class OpenSelectedAction extends FileBrowserAction
 {
 
-	@Getter
-	private QuitAction quit;
-	@Getter
-	private ShowHiddenFilesAction showHidden;
-	@Getter
-	private GoUpAction goUp;
-	@Getter
-	private GoHomeAction goHome;
-	@Getter
-	private RefreshAction refresh;
-	@Getter
-	private OpenLocationAction openLocation;
-	@Getter
-	private DirCommandsAction dirCommands;
-	@Getter
-	private DebugPrintKeyBindings debugPrintKeyBindings;
+	private static final long serialVersionUID = 1L;
 
-	public FileBrowserActions(FileBrowser browser)
+	public OpenSelectedAction(FileBrowser browser)
 	{
-		quit = new QuitAction(browser);
-		showHidden = new ShowHiddenFilesAction(browser);
-		goUp = new GoUpAction(browser);
-		goHome = new GoHomeAction(browser);
-		refresh = new RefreshAction(browser);
-		openLocation = new OpenLocationAction(browser);
-		dirCommands = new DirCommandsAction(browser);
-		debugPrintKeyBindings = new DebugPrintKeyBindings(browser);
+		super(browser, "Open selected", "Open the selected item", null);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		browser.openSelected();
 	}
 
 }
