@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with jafito. If not, see <http://www.gnu.org/licenses/>.
 
-package de.topobyte.jafito.filemanager.launch;
+package de.topobyte.jafito.filemanager.parameterizedcommands;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

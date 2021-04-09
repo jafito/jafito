@@ -21,6 +21,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import de.topobyte.jafito.filemanager.config.Command;
+import de.topobyte.jafito.filemanager.parameterizedcommands.ParameterDialog;
+import de.topobyte.jafito.filemanager.parameterizedcommands.ParameterizedCommandLine;
+import de.topobyte.jafito.filemanager.parameterizedcommands.ParameterizedCommands;
 
 public class TestParameterDialog
 {
@@ -29,8 +32,9 @@ public class TestParameterDialog
 	{
 		Command command = new Command("zip files", "zip $output $input");
 
-		ParameterDialog dialog = SelectionCommands
-				.createParameterDialog(command.getExec());
+		ParameterizedCommandLine pcl = ParameterizedCommands
+				.parse(command.getExec());
+		ParameterDialog dialog = new ParameterDialog(pcl.getVariableNames());
 
 		dialog.setVisible(true);
 		dialog.pack();

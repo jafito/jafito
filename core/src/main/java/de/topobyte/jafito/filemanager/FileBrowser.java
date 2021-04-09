@@ -195,6 +195,18 @@ public class FileBrowser extends JPanel
 		tryGoToPath(parent);
 	}
 
+	public int getNumSelectedRows()
+	{
+		return treeTable.getSelectedRowCount();
+	}
+
+	public Path getFirstSelectedPath()
+	{
+		int row = treeTable.getSelectedRow();
+		TreePath treePath = treeTable.getPathForRow(row);
+		return (Path) treePath.getLastPathComponent();
+	}
+
 	public void refreshModel()
 	{
 		try {

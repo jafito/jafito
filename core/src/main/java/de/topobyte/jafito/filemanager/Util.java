@@ -61,8 +61,16 @@ public class Util
 
 	public static void run(List<String> args)
 	{
+		run(args, null);
+	}
+
+	public static void run(List<String> args, Path workingDirectory)
+	{
 		ProcessBuilder pb = new ProcessBuilder();
 		pb.command(args);
+		if (workingDirectory != null) {
+			pb.directory(workingDirectory.toFile());
+		}
 		try {
 			pb.start();
 		} catch (IOException e) {

@@ -19,11 +19,21 @@ package de.topobyte.jafito.filemanager.actions;
 
 import java.awt.event.ActionEvent;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.JTextField;
 
 import de.topobyte.jafito.filemanager.FileBrowser;
+import de.topobyte.jafito.filemanager.Util;
 import de.topobyte.jafito.filemanager.config.Command;
-import de.topobyte.jafito.filemanager.launch.ParameterDialog;
-import de.topobyte.jafito.filemanager.launch.SelectionCommands;
+import de.topobyte.jafito.filemanager.parameterizedcommands.Literal;
+import de.topobyte.jafito.filemanager.parameterizedcommands.Parameter;
+import de.topobyte.jafito.filemanager.parameterizedcommands.ParameterDialog;
+import de.topobyte.jafito.filemanager.parameterizedcommands.ParameterizedCommandLine;
+import de.topobyte.jafito.filemanager.parameterizedcommands.ParameterizedCommands;
+import de.topobyte.jafito.filemanager.parameterizedcommands.Part;
 import lombok.Getter;
 
 public class SelectionCommandAction extends FileBrowserAction
@@ -51,10 +61,17 @@ public class SelectionCommandAction extends FileBrowserAction
 
 	public void run()
 	{
-		Path path = browser.getPath();
+		if (browser.getNumSelectedRows() != 1) {
+			return;
+		}
+
+		Path dir = browser.getPath();
+		Path input = browser.getFirstSelectedPath();
+
 		String exec = command.getExec();
 
-		ParameterDialog dialog = SelectionCommands.createParameterDialog(exec);
+		ParameterizedCommandLine pcl = ParameterizedCommands.parse(exec);
+		ParameterDialog dialog = new ParameterDialog(pcl.getVariableNames());
 		dialog.setVisible(true);
 		dialog.pack();
 		dialog.setLocationRelativeTo(browser);
@@ -62,19 +79,35 @@ public class SelectionCommandAction extends FileBrowserAction
 		dialog.getButtons().getButtonCancel()
 				.addActionListener(e -> dialog.dispose());
 
-		dialog.getButtons().getButtonOk()
-				.addActionListener(e -> launch(exec, path));
+		dialog.getButtons().getButtonOk().addActionListener(e -> {
+			launch(dir, pcl, input, dialog.getInputs());
+			dialog.dispose();
+		});
 	}
 
-	private void launch(String exec, Path path)
+	private void launch(Path dir, ParameterizedCommandLine pcl, Path path,
+			Map<String, JTextField> inputs)
 	{
-		// TODO: get parameters from dialog, construct command line and execute
-		// List<String> parts = Splitter.on(" ").splitToList(exec);
-		//
-		// List<String> args = new ArrayList<>();
-		// args.addAll(parts);
-		// args.add(path.toString());
-		// Util.run(args);
+		Path relative = dir.relativize(path);
+
+		List<String> args = new ArrayList<>();
+		for (Part part : pcl.getParts()) {
+			if (part instanceof Literal) {
+				args.add(((Literal) part).getText());
+			} else if (part instanceof Parameter) {
+				Parameter p = (Parameter) part;
+				String pn = p.getName();
+				if (pn.equals("input")) {
+					args.add(relative.toString());
+				} else {
+					args.add(inputs.get(pn).getText());
+				}
+			}
+		}
+
+		System.out.println(args);
+
+		Util.run(args, dir);
 	}
 
 }
