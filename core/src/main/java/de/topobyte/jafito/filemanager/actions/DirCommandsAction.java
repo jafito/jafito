@@ -34,7 +34,7 @@ public class DirCommandsAction extends FileBrowserAction
 	{
 		super(browser, "Launch in dir",
 				"Select an application to launch in the current directory",
-				"org/freedesktop/tango/22x22/categories/applications-other.png");
+				"tango-icons/categories/applications-other.png");
 	}
 
 	@Override

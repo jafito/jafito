@@ -49,7 +49,7 @@ public class SelectionCommandAction extends FileBrowserAction
 		super(browser, command.getName(),
 				String.format("Execute %s on the current selection",
 						command.getName()),
-				"org/freedesktop/tango/22x22/categories/applications-other.png");
+				"tango-icons/categories/applications-other.png");
 		this.command = command;
 	}
 

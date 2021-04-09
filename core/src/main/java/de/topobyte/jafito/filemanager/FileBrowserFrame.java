@@ -93,8 +93,8 @@ public class FileBrowserFrame extends JFrame
 				InputEvent.CTRL_DOWN_MASK, KeyEvent.VK_L);
 
 		JMenu menuFavorites = new JMenu("Favorites");
-		menuFavorites.setIcon(ImageLoader
-				.load("org/freedesktop/tango/22x22/actions/bookmark-new.png"));
+		menuFavorites
+				.setIcon(ImageLoader.load("tango-icons/misc/bookmark.png"));
 		menuNavigate.add(menuFavorites);
 
 		for (Bookmark bookmark : config.getBookmarks()) {

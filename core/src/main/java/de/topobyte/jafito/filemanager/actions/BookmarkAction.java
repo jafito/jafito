@@ -32,7 +32,7 @@ public class BookmarkAction extends FileBrowserAction
 	public BookmarkAction(FileBrowser browser, Bookmark bookmark)
 	{
 		super(browser, bookmark.getName(), "Navigate to " + bookmark.getPath(),
-				"org/freedesktop/tango/22x22/actions/bookmark-new.png");
+				"tango-icons/misc/bookmark.png");
 		this.bookmark = bookmark;
 	}
 

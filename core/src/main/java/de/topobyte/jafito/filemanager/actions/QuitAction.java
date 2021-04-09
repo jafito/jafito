@@ -29,7 +29,7 @@ public class QuitAction extends FileBrowserAction
 	public QuitAction(FileBrowser browser)
 	{
 		super(browser, "Quit", "Exit the application",
-				"org/freedesktop/tango/22x22/actions/system-log-out.png");
+				"tango-icons/actions/system-log-out.png");
 	}
 
 	@Override

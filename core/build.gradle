@@ -11,8 +11,6 @@ dependencies {
 
     compile 'org.swinglabs.swingx:swingx-all:1.6.5-1'
 
-    compile 'org.freedesktop.tango:tango-icon-theme:0.8.90'
-
     compile 'org.fusesource.jansi:jansi:1.15'
     compile 'org.jline:jline:3.10.0'
 

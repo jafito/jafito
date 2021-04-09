@@ -30,7 +30,7 @@ public class GoHomeAction extends FileBrowserAction
 	public GoHomeAction(FileBrowser browser)
 	{
 		super(browser, "Go Home", "Navigate to your home directory",
-				"org/freedesktop/tango/22x22/actions/go-home.png");
+				"tango-icons/actions/go-home.png");
 	}
 
 	@Override

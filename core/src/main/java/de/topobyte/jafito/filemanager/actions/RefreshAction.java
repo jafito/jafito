@@ -29,7 +29,7 @@ public class RefreshAction extends FileBrowserAction
 	public RefreshAction(FileBrowser browser)
 	{
 		super(browser, "Refresh", "Refresh the current folder",
-				"org/freedesktop/tango/22x22/actions/view-refresh.png");
+				"tango-icons/actions/view-refresh.png");
 	}
 
 	@Override

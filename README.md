@@ -26,6 +26,6 @@ Then you can run the main executables from the build directory:
 
 # Icons
 
-All icons used in this project are from the Tango icon project, either included
-via the Maven dependency or included from this fork of the original tango
+All icons used in this project are from the Tango icon project, included
+from this fork of the original tango
 repository: [sebkur/tango-icon-theme](https://github.com/sebkur/tango-icon-theme)
