@@ -38,6 +38,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.TreePath;
@@ -137,6 +138,8 @@ public class FileBrowser extends JPanel
 		// actions
 
 		address.addActionListener(e -> goToAddressLocation());
+
+		SwingUtilities.invokeLater(() -> treeTable.requestFocusInWindow());
 	}
 
 	private JButton toolbarButton(Action action)
