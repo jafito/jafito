@@ -1,7 +1,8 @@
 dependencies {
-    implementation 'de.topobyte:swing-utils:0.0.12'
-    implementation 'de.topobyte:awt-utils:0.0.3'
+    api 'de.topobyte:swing-utils:0.0.13'
     api 'de.topobyte:system-utils:0.0.1'
+
+    implementation 'de.topobyte:awt-utils:0.0.3'
     implementation 'de.topobyte:adt-misc:0.0.2'
     implementation 'de.topobyte:various-utils:0.1.0'
     implementation 'de.topobyte:melon-w3c-dom:0.0.2'

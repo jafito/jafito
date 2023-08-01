@@ -28,6 +28,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import de.topobyte.jafito.filemanager.config.FileBrowserConfig;
+import de.topobyte.shared.preferences.SharedPreferences;
+import de.topobyte.swing.util.SwingUtils;
 import de.topobyte.system.utils.SystemPaths;
 
 public class RunFileManager
@@ -44,6 +46,8 @@ public class RunFileManager
 			System.out.println("Error while loading configuration");
 			e.printStackTrace();
 		}
+
+		SwingUtils.setUiScale(SharedPreferences.getUIScale());
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
